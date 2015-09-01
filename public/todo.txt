@@ -1,0 +1,135 @@
+
+grats for tea
+jelly mountain
+
+
+
+
+DONE
+
+
+
+populate table with balances from the get-go
+
+
+TODO -
+
+
+TESTING !!
+DOCKERISATION !!
+LOOK AT OTHER DISSERTATIONS !!
+Find the stauff from im Rampton for Screen Shots !!
+
+
+Net Worth Thingie
+
+
+number format 2 digits
+
+show interets rate on chart
+only move widget from top bar
+
+add inputs as spikes to the chart
+
+Mortgage -
+do either specific end date OR sooner if balance becomes negative
+
+set chart to full range y default
+
+once a monthly timeseries has been generated - then grey out the input values !!
+
+put months in utils or constants file
+
+
+
+Save - should update series for chart
+
+
+Next - do a Mortgage
+Title on the widget
+
+NET WORTH !!
+
+
+
+Separation of concerns !!
+
+Do THREE Things
+
+1) Calulate timeseries from inputs
+2) Caluclate daily balance from input timeseries
+3) calculate chart data ( similar to daily balance ) from daily baance
+
+
+Add Stepped Payment
+
+Model the classes
+
+Make Date Readonly
+make long timeseries
+
+Fix date change bug on chart
+
+
+
+Monthly - copy down
+months from start to finish
+- get javascript days in month
+- separate module to make the dates
+
+
+
+can't set headers after they are sent error
+
+use nodeJs to generate timeseries based on start and end dates
+
+refactor routes into separate modules !
+
+constants for stages
+only drag thing when on header bar then remove draggable toggler
+
+PERSON DETAILS INPUT !!
+
+use keith wood's datepick - sort this out
+
+put sub templates in separate files
+
+Add date picker helper thing
+
+Buy Domain Driven Design
+
+===
+
+Pension Attributes :
+
+
+p1
+Start Date
+End Date
+
+Monthly Payment
+Interest Rate
+
+Fees
+===
+
+
+
+DONE
+
+
+
+do scrolly scrolly and save
+lump sum start + occasional lump sums ?
+
+widgetTableId
+#widget-pension-table
+
+look at the what if money was no object video !!
+Claire didn't know to do table before viewing chart
+
+Link the model to the knockout model
+Get the window size and - Place a widget in a random location
+Give each chart a separate DOM ID
+
+When a instr is chosen make the rest inchoosable and put it in the title bar

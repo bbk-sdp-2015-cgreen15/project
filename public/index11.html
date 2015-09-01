@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <title>What If Analyser</title>
+    <link rel="stylesheet" href="stylesheets/reset.css">
+    <link rel="stylesheet" href="bower_components/jquery-ui/themes/smoothness/jquery-ui.min.css">
+    <link rel="stylesheet" href="stylesheets/style.css">
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="datepick-5.0.0/jquery.datepick.css">
+
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
+    <script src="datepick-5.0.0/jquery.plugin.min.js"></script>
+    <script src="datepick-5.0.0/jquery.datepick.min.js"></script>
+    <script src="bower_components/handlebars/handlebars.min.js"></script>
+    <script src="bower_components/highstock/highstock.js"></script>
+    <script src="bower_components/knockout/dist/knockout.js"></script>
+
+</head>
+<body>
+
+
+
+
+<script id="widget-pension-main" type="x-handlebars-template">​
+
+<div class="editer-header">
+    <div>Pension</div>
+    <span>Start Date</span> <span><input type="text" class="ip-date-start" id="{{widgetStartDateId}}" data-bind="textInput: startDate" /></span>
+    <span>End Date</span> <span><input type="text" class="ip-date-end" id="{{widgetEndDateId}}"  data-bind="textInput: endDate" /></span>
+</div>
+
+Investment Rate: %<input type="text" class="ip-apr" id="{{widgetAPR}}" value="5.5" data-bind="textInput: apr" /><br >
+Lump: £<input type="text" class="ip-lump" value="" data-bind="textInput: lump" /><br />
+Monthly: £<input type="text" class="ip-monthly" value="" data-bind="textInput: monthly" />
+
+<div>
+    <button data-bind="click: $root.saveStage2">Save</button>
+</div>
+
+
+</script>
+
+<script id="widget-isa-main" type="x-handlebars-template">​
+
+<div class="editer-header">
+    <div>ISA</div>
+    <span>Start Date</span> <span><input type="text" class="ip-date-start" id="{{widgetStartDateId}}" /></span><br>
+    <span>End Date</span> <span><input type="text" class="ip-date-end" id="{{widgetEndDateId}}" /></span>
+</div>
+
+Growth Rate: %<input type="text" class="ip-apr" id="{{widgetAPR}}" value="5.5"/>
+
+</script>
+
+
+<script id="widget-mortgage-main" type="x-handlebars-template">​
+
+<div class="editer-header">
+    <div>Mortgage</div>
+    <span>Start Date</span> <span><input type="text" class="ip-date-start" id="{{widgetStartDateId}}" /></span>
+    <span>End Date</span> <span><input type="text" class="ip-date-end" id="{{widgetEndDateId}}" /></span>
+</div>
+
+Interest Rate: %<input type="text" class="ip-apr" id="{{widgetAPR}}" value="3.99"/>
+
+</script>
+
+
+<script  id="widget-pension-table" type="x-handlebars-template">​
+
+    <div class="widget-table-row">
+        <div class="widget-table-date">Date</div>
+        <div class="widget-table-in">Payment</div>
+        <div class="widget-table-balance">Balance</div>
+    </div>
+
+        <!--
+        <tbody data-bind="foreach: people">
+        -->
+
+    <div class="widget-table-row"  data-bind="foreach: timeEntries">
+        <div class="widget-table-date"><input type="text" data-bind="value: date" /></div>
+        <div class="widget-table-in"><input type="text"  data-bind="value: amount" /></div>
+        <div class="widget-table-balance"><input type="text" data-bind="value: balance" /></div>
+    </div>
+</script>
+
+
+<script id="widget-cc-main" type="x-handlebars-template">​
+
+<div class="editer-header">
+    <div>Credit Card</div>
+    <span>Start Date</span> <span><input type="text" class="ip-date-start" id="{{widgetStartDateId}}" /></span>
+    <span>End Date</span> <span><input type="text" class="ip-date-end" id="{{widgetEndDateId}}" /></span>
+</div>
+
+APR: %<input type="text" class="ip-apr" id="{{widgetAPR}}" value="13.99" />
+
+</script>
+
+<script id="widget-template" type="x-handlebars-template">​
+
+<div id="{{widgetDomId}}" data-widget-id="{{widgetId}}" class="ui-widget-content c-widget">
+
+    <div class="widget-header"><h4>A Widget</h4>
+        <div class="widget-tool-icon-wrapper">
+            <span class="widget-tool-icon" title="Edit"><i class="fa fa-edit widget-editer"></i></span>
+            <span class="widget-tool-icon" title="Numbers"><i class="fa fa-columns widget-tabler"></i></span>
+            <span class="widget-tool-icon" title="Chart"><i class="fa fa-line-chart widget-charter"></i></span>
+            <span class="widget-tool-icon" title="Movable"><i class="fa fa-arrows-alt widget-mover widget-movable"></i></span>
+            <span class="widget-tool-icon" title="Delete"><i class="fa fa-trash-o widget-slayer"></i></span>
+        </div>
+    </div>
+
+    <div class="widget-body">
+        <div class="widget-chart" id="{{widgetChartId}}"></div>
+
+        <div class="widget-table" id="{{widgetTableId}}"></div>
+
+        <div class="widget-edit">
+
+            <div class="widget-edit-stages">
+                <span data-stage="1" class="widget-edit-stage stage-1 bolded">Type</span> &gt;
+                <span data-stage="2" class="widget-edit-stage stage-2">Main</span> &gt;
+                <span data-stage="3" class="widget-edit-stage stage-3">Details</span>
+            </div>
+
+            <div class="widget-edit-stage1"  id="{{widgetEditStage1}}" >
+                <!-- Stage 1 -->
+                <h3>Choose Type of Widget:</h3>
+
+                <ul class="instrument-chooser">
+                    <li  class="indent-1">Save</li>
+                    <ul>
+                        <li data-inst-type="save-pension" class="instrument">Pension</li>
+                        <li data-inst-type="save-isa" class="instrument">ISA</li>
+                    </ul>
+                    <li class="indent-1">Debt</li>
+                    <ul>
+                        <li data-inst-type="debt-mortgage" class="instrument">Mortgage</li>
+                        <li data-inst-type="debt-cc" class="instrument">Credit Card</li>
+                    </ul>
+
+                </ul>
+                <!-- End Stage 1 -->
+            </div>
+            <div class="widget-edit-stage2" id="{{widgetEditStage2}}"></div>
+            <div class="widget-edit-stage3" id="{{widgetEditStage3}}"></div>
+        </div>
+    </div>
+</div>
+
+</script>
+
+
+
+<div id="menubar">
+    <button id="add-widget">Add Widget</button>
+</div>
+
+<div id="widgetsContainer"></div>
+
+
+
+<script src="/js/fe11.js"></script>
+</body>
+</html>

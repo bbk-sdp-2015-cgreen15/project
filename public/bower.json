@@ -1,0 +1,25 @@
+{
+  "name": "public",
+  "version": "0.0.0",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "font-awesome": "~4.3.0",
+    "handlebars": "~3.0.3",
+    "highstock": "https://github.com/highslide-software/highstock-release.git#~2.1.7",
+    "jquery-ui": "~1.11.4",
+    "knockout": "~3.3.0",
+    "lodash": "~3.10.1"
+  }
+}
