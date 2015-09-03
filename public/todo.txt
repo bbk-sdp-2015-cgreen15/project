@@ -1,32 +1,19 @@
 
-grats for tea
-jelly mountain
-
-
-
-
-DONE
-
-
-
-populate table with balances from the get-go
-
 
 TODO -
 
 
+some sort of grunt driven linting task
 TESTING !!
 DOCKERISATION !!
-LOOK AT OTHER DISSERTATIONS !!
-Find the stauff from im Rampton for Screen Shots !!
-
+Find the stauff from Tim Rampton for Screen Shots !!
 
 Net Worth Thingie
 
 
 number format 2 digits
 
-show interets rate on chart
+show interest rate on chart
 only move widget from top bar
 
 add inputs as spikes to the chart
@@ -50,18 +37,7 @@ Title on the widget
 
 NET WORTH !!
 
-
-
 Separation of concerns !!
-
-Do THREE Things
-
-1) Calulate timeseries from inputs
-2) Caluclate daily balance from input timeseries
-3) calculate chart data ( similar to daily balance ) from daily baance
-
-
-Add Stepped Payment
 
 Model the classes
 
@@ -70,16 +46,11 @@ make long timeseries
 
 Fix date change bug on chart
 
-
-
 Monthly - copy down
 months from start to finish
 - get javascript days in month
 - separate module to make the dates
 
-
-
-can't set headers after they are sent error
 
 use nodeJs to generate timeseries based on start and end dates
 
@@ -96,7 +67,6 @@ put sub templates in separate files
 
 Add date picker helper thing
 
-Buy Domain Driven Design
 
 ===
 
@@ -115,9 +85,35 @@ Fees
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 DONE
 
 
+
+gruts for tea
+jelly mountain
+
+populate table with balances from the get-go
+
+LOOK AT OTHER DISSERTATIONS !!
+
+Do THREE Things
+
+1) Calulate timeseries from inputs
+2) Caluclate daily balance from input timeseries
+3) calculate chart data ( similar to daily balance ) from daily baance
+
+Add Stepped Payment
 
 do scrolly scrolly and save
 lump sum start + occasional lump sums ?

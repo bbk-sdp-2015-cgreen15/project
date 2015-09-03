@@ -1,9 +1,11 @@
 //*******************************************************************************
 // Main Script for handling Widgets etc
 
+
+// var _ = require('lodash');
+
 console.log('fe13');
 var ONE_MINUTE = 60 * 1000;
-// var _ = require('lodash');
 
 (function () {
 
@@ -69,6 +71,67 @@ var ONE_MINUTE = 60 * 1000;
     };
 
 
+    var extend = function (base, child) {
+
+        for (var fn in base) {
+
+            if(base.hasOwnProperty(fn)) {
+                child[fn] = base[fn];
+            }
+
+        }
+
+    };
+
+
+    function BaseViewModel(context) {
+
+        var self = context;
+
+        self.startDate = ko.observable();
+        self.endDate = ko.observable();
+        self.tableEntries = ko.observableArray([]);
+
+        self.setOpts = function (opts) {
+            self._opts = opts || {};
+        };
+
+
+        self.copyDown = function (e) {
+
+            var wid = self._opts.wid;
+
+            var entryId = e.entryId;
+            var entry = self.tableEntries()[entryId];
+            var oldEntries = self.tableEntries();
+            var newValue = Number(entry.amount);
+            var entriesLength = oldEntries.length;
+
+            var entryToChange = {};
+
+            for (var i = 0; i < entriesLength; i++) {
+
+                if (i < entryId) continue;
+                entryToChange = oldEntries[i];
+                entryToChange.amount = newValue;
+                self.tableEntries.splice(i, 1, entryToChange); // Replace the entry at the appropriate index
+            }
+
+            var data = self.tableEntries();
+            self.tableEntries(null);
+            self.tableEntries(data);
+
+            makeChartSeries(wid, function () {
+
+            });
+
+        };
+
+        return self;
+
+    }
+
+    // TODO - Class Extender
 
 
 
@@ -81,13 +144,10 @@ var ONE_MINUTE = 60 * 1000;
         self._opts = opts || {};
         self.model = {};
 
-        self.startDate = ko.observable();
-        self.endDate = ko.observable();
         self.apr = ko.observable("0");
         self.monthly = ko.observable("50");
         self.lump = ko.observable("1000");
 
-        self.tableEntries = ko.observableArray([]);
 
         // Update Functions
 
@@ -137,8 +197,6 @@ var ONE_MINUTE = 60 * 1000;
             var widget = widgetList[wid];
             var attributes = widget.attributes;
 
-            console.log(' you clicked save ');
-            console.log(self.tableEntries());
 
             makeChartSeries(wid, function () {
                 console.log(' Make Chart Series Callback called from saveEntries');
@@ -146,54 +204,8 @@ var ONE_MINUTE = 60 * 1000;
 
         };
 
-
-        self.copyDown = function (e) {
-
-            var wid = self._opts.wid;
-
-            var entryId = e.entryId;
-            var entry = self.tableEntries()[entryId];
-            var oldEntries = self.tableEntries();
-            var newValue = Number(entry.amount);
-            var entriesLength = oldEntries.length;
-
-            var entryToChange = {};
-
-            for (var i = 0; i < entriesLength; i++) {
-
-                if (i < entryId) continue;
-                entryToChange = oldEntries[i];
-                entryToChange.amount = newValue;
-                self.tableEntries.splice(i, 1, entryToChange); // Replace the entry at the appropriate index
-            }
-
-            var data = self.tableEntries();
-            self.tableEntries(null);
-            self.tableEntries(data);
-
-            makeChartSeries(wid, function () {
-
-
-
-            });
-
-
-        };
-
-
         self.addEntry = function (e) {
-
-            //
-            //var wid = self._opts.wid;
-            //var widget = widgetList[wid];
-            //var attributes = widget.attributes;
-            //
-            //var oldEntries = self.tableEntries();
-
         };
-
-
-
 
         return self;
     }
@@ -542,18 +554,14 @@ var ONE_MINUTE = 60 * 1000;
                 var wid = this.countWidgets();  // get the new index from the widgetList
                 var widget = widgetList[wid] = new Widget(wid);
 
-
-
                 // TODO - refactor instrument choosing !!
                 switch(instrument) {
                     case 'pension':
                         widget.ko = new PensionViewModel({wid: wid});
+                        var baseViewModel = new BaseViewModel(widget.ko);
+                        extend(baseViewModel, widget.ko);
                         break;
                 }
-
-
-
-
                 return widget;
             },
 
