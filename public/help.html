@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <title>Help</title>
+
+
+</head>
+<body>
+
+<a id="help-content"></a>
+
+<div>
+
+    <h1>“What If Analyser” User Manual</h1>
+    <br><br>
+    <h2>Purpose</h2><br>
+    <p>The purpose of this software :<br>
+    To be able to predict investment vehicle performance over time.</p>
+    <br>
+    <h3>What does it do?</h3>
+    <p>Assuming a client has certain financial products e.g. Pension(s) ISA(s) Mortgage(s) Loan(s);<br>
+    We want to be able to look at the balances and values for each of the products at any given point in time.</p>
+    <br>
+    <h3>How is this achieved?</h3>
+    <br>
+    <p>Each product can be represented by a “widget”.<br>
+    Widgets can be moved around on the screen so you can have more than one at a time (see screenshot )</p>
+    <br>
+    <br>
+
+    <h2>Widget workflow –</h2>
+    <br>
+    <ul>
+        <li>To create a widget press the “Add Widget” button</li>
+        <li>You can name your widget (*1) (widgets are numbered from 0 onwards )</li>
+        <li>The new widget pops onto the screen and you can <a href="#move">move</a> it somewhere else by enabling dragging (see 1)</li>
+        <li>You firstly choose the type of product – Pension / ISA / Mortgage / Loan</li>
+        <li>Once you click one you can enter basic information such as product duration / interest rate / monthly payment etc</li>
+        <li>Once these are entered click save and the system will calculate a schedule or payments and a graph of value</li>
+        <li>The schedule of payments ( and balances ) can be seen by clicking the ( table ) icon</li>
+        <li>The graph of value can be seen by clicking the ( graph) icon</li>
+        <li>The schedule of payments can be altered to for instance step up payments at a certain stage or add one extra lump sum payment ( or value extraction – see notes 4 and 5)</li>
+    </ul>
+
+    <p>You can have more than one widget on the screen and they can be of different types with different start and end dates etc</p>
+    <br>
+    <p>The net worth graph ( 6) shows the total balance of all the different widgets</p>
+    <br>
+    <p>GRAPHS – TO get to the value graph click the graph icon.  Note that there is a navigation bar at the bottom of the graph that allows you to zoom in / out on which part of the time series you want to view on the main graph.  By default this may not show the full time.</p>
+    <br>
+    <br>
+
+    <h2>Notes</h2>
+    <br>
+    <h4><a id="move"></a>Moving a widget</h4>
+    <br>
+    <p>Mouse over the widget header bar and you will see the cursor changes to a cross shape.  You can now drag the widget around.</p>
+    <br>
+<pre>
+
+    Widget naming not implemented yet.  At the moment they are numbered 0,1,2 etc
+
+    Lump sum payment / value extraction.  The schedule of payments is set out much like an
+    excel spreadsheet might be.  You can add an extra payment by putting the amount in the box.
+
+    Copy Down.  It is possible if desired to up ( or down ) payments from a certain date forward by doing the following .
+    Put the new payment in the appropriate date box.  Click the “copy down” arrow ( see icon )
+    HOWEVER – once this is done it will overwrite any existing stepped or other payments below it.
+    ALSO NOTE – if you then go back to the stage 1 e.g. basic info and enter new interest rate etc.
+    It will overwrite any copydown information you have entered here.  If you screw things up you can
+    easily delete the widget and start again!
+
+    6) Net Worth Graph.
+    If you have more than one widget this will add up all the various balances and show the total value
+    of all investments over the total time of the various widgets.
+
+</pre>
+
+    <h3>Assumptions</h3>
+    <br>
+    <p>Compound interest is calculated and added (or subtracted) daily.</p>
+    <p>At the moment there is no provision for taking off broker fees.</p>
+    <br>
+    <h3>Future Features</h3>
+    <br>
+    <p>At the moment you can’t save a set of widgets or assign them to a user profile ( stuff for future )</p>
+    <br>
+
+</div>
+
+</body>
+</html>

@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="stylesheets/style.css">
     <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="datepick-5.0.0/jquery.datepick.css">
+    <link rel="stylesheet" href="bower_components/jquery-colorbox/example1/colorbox.css">
 
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
@@ -17,6 +18,7 @@
     <script src="bower_components/handlebars/handlebars.min.js"></script>
     <script src="bower_components/highstock/highstock.js"></script>
     <script src="bower_components/knockout/dist/knockout.js"></script>
+    <script src="bower_components/jquery-colorbox/jquery.colorbox-min.js"></script>
 
 </head>
 <body>
@@ -185,15 +187,11 @@ APR: %<input type="text" class="ip-apr" id="{{widgetAPR}}" value="13.99" />
 </script>
 
 <div id="menubar">
-    <button id="show-help">Help</button>
+    <button id="show-help" data-href="help.html">Help</button>
     <button id="add-widget">Add Widget</button>
 </div>
 
 <div id="widgetsContainer"></div>
-
-<div id="help-content">
-    <h1>Blah</h1>
-</div>
 
 <script src="/js/fe13.js"></script>
 </body>

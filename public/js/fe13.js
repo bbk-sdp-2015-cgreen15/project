@@ -671,7 +671,8 @@ var ONE_MINUTE = 60 * 1000;
     }
 
     function showHelp() {
-        console.log(' would show help ')
+        console.log(' would show help ');
+
     }
 
     function addWidget() {
@@ -703,9 +704,7 @@ var ONE_MINUTE = 60 * 1000;
         var $addWidget = $('#add-widget');
         $addWidget.on('click', addWidget);
 
-
-        var $showHelp = $('#show-help');
-        $showHelp.on('click', showHelp);
+        $('#show-help').colorbox({href: function(){ return $(this).attr('data-href') + '#help-content';}, width: "80%", height: "80%"});
     }
 
 
