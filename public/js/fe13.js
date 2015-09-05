@@ -145,6 +145,7 @@ var ONE_MINUTE = 60 * 1000;
         self.model = {};
 
         self.apr = ko.observable("0");
+        self.step = ko.observable("0");
         self.monthly = ko.observable("50");
         self.lump = ko.observable("1000");
 
@@ -185,6 +186,7 @@ var ONE_MINUTE = 60 * 1000;
             attributes.startDay = day > 28 ? 28 : day;
             attributes.monthly = self.monthly();
             attributes.apr = self.apr();
+            attributes.step = self.step();
             attributes.lump = self.lump();
 
             goToTablyWithDates(wid);
@@ -508,24 +510,7 @@ var ONE_MINUTE = 60 * 1000;
             }
         }
 
-        function toggleMoving(wid) {
-
-            var widget = widgetList[wid];
-            var $widget = $('#' + widget.domId);
-
-            var moveIcon = $widget.find('.widget-mover');
-            if ($(moveIcon).hasClass('widget-movable')) {
-                $widget.draggable({disabled: true});
-                $(moveIcon).removeClass('widget-movable');
-                $(moveIcon).addClass('widget-immovable');
-            } else {
-                $widget.draggable({disabled: false});
-                $(moveIcon).removeClass('widget-immovable');
-                $(moveIcon).addClass('widget-movable');
-            }
-        }
-
-        function showCharty(wid) {
+          function showCharty(wid) {
 
             showOne('chart', wid);
             var widget = widgetList[wid];
@@ -603,7 +588,6 @@ var ONE_MINUTE = 60 * 1000;
                     // find target element
                     var targetEle = '';
                     if ($(e.target).hasClass('widget-slayer')) targetEle = 'slayer';
-                    if ($(e.target).hasClass('widget-mover')) targetEle = 'mover';
                     if ($(e.target).hasClass('widget-charter')) targetEle = 'charter';
                     if ($(e.target).hasClass('widget-tabler')) targetEle = 'tabler';
                     if ($(e.target).hasClass('widget-editer')) targetEle = 'editer';
@@ -625,10 +609,6 @@ var ONE_MINUTE = 60 * 1000;
                             break;
                         case 'editer':
                             showEdity(wid);
-                            widgetHelpers.setZIndexes(wid);
-                            break;
-                        case 'mover':
-                            toggleMoving(wid);
                             widgetHelpers.setZIndexes(wid);
                             break;
                         case 'instrument':
@@ -675,7 +655,8 @@ var ONE_MINUTE = 60 * 1000;
         setTimeout(function () {
 
             var $nwd = $('#' + widget.domId);
-            $nwd.draggable({disabled: true});
+            $nwd.draggable({handle: '.widget-header'});
+
             if (RESIZABLE) $nwd.resizable();
 
             // set z-index
@@ -687,6 +668,10 @@ var ONE_MINUTE = 60 * 1000;
 
         }, 0);
 
+    }
+
+    function showHelp() {
+        console.log(' would show help ')
     }
 
     function addWidget() {
@@ -717,7 +702,14 @@ var ONE_MINUTE = 60 * 1000;
         // attach to add widget button
         var $addWidget = $('#add-widget');
         $addWidget.on('click', addWidget);
+
+
+        var $showHelp = $('#show-help');
+        $showHelp.on('click', showHelp);
     }
+
+
+
 
     function drawChart(widget) {
 

@@ -32,6 +32,7 @@
 <div class="editer-body">
     <span>Growth Rate</span><span><input type="text" class="ip-apr" id="{{widgetAPR}}" value="5.5" data-bind="textInput: apr" />%</span><br >
     <span>Lump</span><span><input type="text" class="ip-lump" value="" data-bind="textInput: lump" /><br /></span>
+    <span>Step</span><span><input type="text" class="ip-lump" value="" data-bind="textInput: step" /><br /></span>
     <span>Monthly</span><span><input type="text" class="ip-monthly" value="" data-bind="textInput: monthly" /></span>
 </div>
 <div>
@@ -139,7 +140,6 @@ APR: %<input type="text" class="ip-apr" id="{{widgetAPR}}" value="13.99" />
             <span class="widget-tool-icon" title="Edit"><i class="fa fa-edit widget-editer"></i></span>
             <span class="widget-tool-icon" title="Numbers"><i class="fa fa-columns widget-tabler"></i></span>
             <span class="widget-tool-icon" title="Chart"><i class="fa fa-line-chart widget-charter"></i></span>
-            <span class="widget-tool-icon" title="Movable"><i class="fa fa-arrows-alt widget-mover widget-immovable"></i></span>
             <span class="widget-tool-icon" title="Delete"><i class="fa fa-trash-o widget-slayer"></i></span>
         </div>
     </div>
@@ -185,10 +185,15 @@ APR: %<input type="text" class="ip-apr" id="{{widgetAPR}}" value="13.99" />
 </script>
 
 <div id="menubar">
+    <button id="show-help">Help</button>
     <button id="add-widget">Add Widget</button>
 </div>
 
 <div id="widgetsContainer"></div>
+
+<div id="help-content">
+    <h1>Blah</h1>
+</div>
 
 <script src="/js/fe13.js"></script>
 </body>

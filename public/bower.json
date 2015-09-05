@@ -20,6 +20,7 @@
     "highstock": "https://github.com/highslide-software/highstock-release.git#~2.1.7",
     "jquery-ui": "~1.11.4",
     "knockout": "~3.3.0",
-    "lodash": "~3.10.1"
+    "lodash": "~3.10.1",
+    "jquery-colorbox": "~1.6.3"
   }
 }
