@@ -2,19 +2,20 @@
 
 TODO -
 
+Title on the widget
+
+NET WORTH !!
 
 some sort of grunt driven linting task
 TESTING !!
-DOCKERISATION !!
-Find the stauff from Tim Rampton for Screen Shots !!
+
+Find the stuff from Tim Rampton for Screen Shots !!
 
 Net Worth Thingie
-
 
 number format 2 digits
 
 show interest rate on chart
-only move widget from top bar
 
 add inputs as spikes to the chart
 
@@ -33,9 +34,6 @@ Save - should update series for chart
 
 
 Next - do a Mortgage
-Title on the widget
-
-NET WORTH !!
 
 Separation of concerns !!
 
@@ -98,6 +96,8 @@ Fees
 
 DONE
 
+only move widget from top bar
+DOCKERISATION !! - NO
 
 
 gruts for tea

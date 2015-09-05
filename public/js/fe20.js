@@ -1,6 +1,10 @@
 //*******************************************************************************
 // Main Script for handling Widgets etc
 
+
+console.log('fe20');
+var ONE_MINUTE = 60 * 1000;
+
 (function () {
 
     'use strict';
@@ -8,11 +12,21 @@
     //*******************************************************************************
     // Constants + Pseudo Globals
 
+    var DATE_FORMAT = "d MM yy";
+    var WIDGET_WIDTH = 600;
+    var WIDGET_HEIGHT = 400;
+    var SHOWSPEED = 800;
+
+    var STAGE_DETAILS = 1;
+    var STAGE_TABLE = 2;
+    var STAGE_CHART = 3;
+
     var RESIZABLE = false;
     var widgetList = {};    // Hash List !
     var widgetHelpers;
 
-    var templateIdList = ['widget-template',
+    var templateIdList = [
+        'widget-template',
         'widget-pension-main',
         'widget-isa-main',
         'widget-mortgage-main',
@@ -26,73 +40,78 @@
     // Classes
 
 
-    // Widget Class
-    var Widget = function Widget(idx) {
-
-        this.idx = idx;
-        this.type = null;
-        this.instrument = null;
-        this.html = '';
-        this.z = idx + 1;
-        this.domId = 'widgetId_' + idx.toString();
-        this.chartId = 'widgetChartId_' + idx.toString();
-        this.editStage1Id = 'editStage1Id_' + idx.toString();
-        this.editStage2Id = 'editStage2Id_' + idx.toString();
-        this.editStage3Id = 'editStage3Id_' + idx.toString();
-        this.editStage1Value = null;
-        this.editStage2Value = null;
-        this.editStage3Value = null;
-        this.ko = {}; // Knockout Model !
-        this.timeSeries = [];  // Blank
-        return this;
-
-    };
-
-
-
     //*******************************************************************************
-    // Private Functions for General Use
+    // Orchestration functions
 
-    function alertMessage(message) {
-        alert(message);
+
+    function updateBalances(wid, sparseTimeSeries) {
+
+        var widget = widgetList[wid];
+        var tableEntries = widget.ko.tableEntries();
+        var i = 0;
+
+        $.each(sparseTimeSeries, function (key, value) {
+
+            // update the display balance
+            tableEntries[i].balance = value.balance;
+            i++;
+        });
+
+        widget.ko.tableEntries(null);
+        widget.ko.tableEntries(tableEntries);
     }
 
 
+    function makeChartSeries(wid, callback) {
 
-    function compileTemplates() {
+        var widget = widgetList[wid];
+        var attributes = widget.attributes;
+        var tableEntries = widget.ko.tableEntries();
 
-        var template;
+        // Get chartData from the service
+        $.ajax({
+            url: "/app/tst",
+            type: "post",
+            data: JSON.stringify({
+                attributes: attributes,
+                tableEntries: tableEntries
+            }),
+            contentType: "application/json",
+            dataType:'json'
 
-        var i;
-        for(i = 0; i < templateIdList.length; i++) {
+        }).success(function (data) {
 
-            var templateId = templateIdList[i];
-            template = $('#' + templateId).html();
-            templateCompiledList[templateId] = Handlebars.compile(template);
-        }
+            widget.chartData = data.chartData;
+            var sparseTimeSeries = data.sparseTimeSeries;
+            console.log('sparseTimeSeries');
+            console.log(sparseTimeSeries);
+            updateBalances(wid, sparseTimeSeries);
+            callback();
+        });
     }
 
-    function makeTimeSeries(widget) {
 
-        widget.timeSeries = [];
-        widget.timeSeries.length = 0;
+    function goToTablyWithDates(wid) {
 
-        var start = 1216080000000;
-        var epoch = start;
-        var interval = 1000 * 24 * 60 * 60;
-        var val = 500;
-        var seed = 5;
+        var widget = widgetList[wid];
+        var attributes = widget.attributes;
 
-        for (var i = 0; i < 100; i++) {
+        // Get TableData from the service
+        $.ajax({
+            url: "/app/tabledata",
+            type: "post",
+            data: attributes
+        }).success(function(tableData) {
 
-            val = val + Math.random();
-            seed = ( seed + 17 ) % 5;
-            widget.timeSeries.push([epoch, val]);
-            epoch = epoch + interval;
+            widget.ko.tableEntries(tableData);
+            widget.editStage2Value = true;
 
-        }
+            makeChartSeries(wid, function () {
+
+                widgetHelpers.showCharty(wid);
+            });
+        });
     }
-
 
     //*******************************************************************************
     // MAIN
@@ -102,21 +121,17 @@
         //*******************************************************************************
         // Private Functions for Widget Helpers
 
-// has the widget already been made ???
-        // IMMUTABLE ! -
- //       Throw the widget away if not
-
+        // TODO - fix the Keith Wood KO datepickers issue !
 
         function applyDatePickers(wid) {
 
             var $start = $('#startDateId_' + wid);
             $start.datepicker();
-            $start.datepicker('option', 'dateFormat', "d MM yy");
+            $start.datepicker('option', 'dateFormat', DATE_FORMAT);
             var $end = $('#endDateId_' + wid);
             $end.datepicker();
-            $end.datepicker('option', 'dateFormat', "d MM yy");
+            $end.datepicker('option', 'dateFormat', DATE_FORMAT);
         }
-
 
         function addMortgage(wid) {
             console.log(' Would Add Mortgage');
@@ -127,12 +142,33 @@
         }
 
         function addPension(wid) {
-            console.log(' Would Add Pension');
+
+            var widget = widgetList[wid];
+            console.log(' In Add Pension widget is ' , widget );
+            addTable(wid, 'pension');
+
+            setTimeout(function () {
+                applyBindings(widget);
+            }, 0);
         }
 
         function addISA(wid) {
             console.log(' Would Add ISA');
         }
+
+        function addTable(wid) {
+
+            var widget = widgetList[wid];
+            var instrument = widget.instrument || 'pension';    // TODO - Fix !
+            var templateName = 'widget-' + instrument + '-table';
+            var templateHtml= $('#' + templateName).html();
+            var templateCompiled = Handlebars.compile(templateHtml);
+            var data = {};
+            var $ins = $('#' + widget.tableId);
+            var tableHtml = templateCompiled(data);
+            $ins.html(tableHtml);
+        }
+
 
         function addInstrument(wid) {
 
@@ -140,20 +176,8 @@
 
             var widget = widgetList[wid];
             var instrument = widget.instrument;
-            switch(instrument) {
-                case 'mortgage':
-                    addMortgage(wid);
-                    break;
-                case 'pension':
-                    addPension(wid);
-                    break;
-                case 'isa':
-                    addISA(wid);
-                    break;
-                case 'cc':
-                    addCreditCard(wid);
-                    break;
-            }
+
+            // STAGE 2 Template
 
             // Put a compiled template into the appropriate place
             var $ins = $('#' + widget.editStage2Id);
@@ -175,21 +199,37 @@
                 applyDatePickers(wid);
             }, 0);
 
+            addTable(wid, instrument);
+
+            switch(instrument) {
+                case 'mortgage':
+                    addMortgage(wid);
+                    break;
+                case 'pension':
+                    addPension(wid);
+                    break;
+                case 'isa':
+                    addISA(wid);
+                    break;
+                case 'cc':
+                    addCreditCard(wid);
+                    break;
+            }
         }
-
-
 
         function boldChosenInstrument(context) {
             $(context).removeClass('greyed');
             $(context).addClass('bolded');
         }
-        function greyOutAllInstruments(widDomId) {
+
+        function greyOutAllInstruments(wid) {
 
             // In this widget, find the thing with class instrument-chooser
-            // find all its direct descendents with class instrument
+            // find all its direct descendants with class instrument
             // add class greyed
 
-            var $widget = $('#' + widDomId);
+            var widget = widgetList[wid];
+            var $widget = $('#' + widget.domId);
             $widget.find('.instrument').addClass('greyed');
         }
 
@@ -202,7 +242,7 @@
                 ' Make another widget if required (and delete this one if not needed).');
             }
 
-            greyOutAllInstruments(widget.domId);
+            greyOutAllInstruments(wid);
             boldChosenInstrument(context);
 
             var typeList = $(context).data('inst-type');
@@ -213,26 +253,23 @@
             addInstrument(wid);
 
             setTimeout(function () {
-                chooseStage(null, wid, 2);
-            }, 1200);
-
+                chooseStage(wid, 2);
+            }, 900);
         }
 
-        function chooseStage(context, wid, stageId) {
+        function chooseStage(wid, stageId) {
 
-            // widget-edit-stage
-
-            // unbold all stages, bold the selected stage
+            // un-bold all stages, bold the selected stage
             var widget = widgetList[wid];
-            var rate = 1000;
+            var $widget = $('#' + widget.domId);
 
             var stage;
             if (stageId) {
-                stage = stageId
+                stage = Number(stageId);
             } else {
-                stage = $(context).data('stage');
+                stage = Number($widget.data('stage'));
             }
-            var $widget = $('#' + widget.domId);
+
             $widget.find('.widget-edit-stage').removeClass('bolded');
             $widget.find('.widget-edit-stage.stage-' + stage).addClass('bolded');
 
@@ -240,20 +277,24 @@
             var stage2Id = 'editStage2Id_' + wid;
             var stage3Id = 'editStage3Id_' + wid;
 
-            $('#' + stage1Id).hide(rate);
-            $('#' + stage2Id).hide(rate);
-            $('#' + stage3Id).hide(rate);
+            $('#' + stage1Id).hide(SHOWSPEED);
+            $('#' + stage2Id).hide(SHOWSPEED);
+            $('#' + stage3Id).hide(SHOWSPEED);
 
-            if (1 == stage) $('#' + stage1Id).show(rate);
-            if (2 == stage) $('#' + stage2Id).show(rate);
-            if (3 == stage) $('#' + stage3Id).show(rate);
+            if (STAGE_DETAILS === stage) $('#' + stage1Id).show(SHOWSPEED);
+            if (STAGE_TABLE === stage) $('#' + stage2Id).show(SHOWSPEED);
+            if (STAGE_CHART === stage) $('#' + stage3Id).show(SHOWSPEED);
         }
 
-        function showOne(context, whichOne, wid) {
 
-            var widgetChart = $(context).find('.widget-chart');
-            var widgetEdit = $(context).find('.widget-edit');
-            var widgetTable = $(context).find('.widget-table');
+        function showOne(whichOne, wid) {
+
+            var widget = widgetList[wid];
+            var $widget = $('#' + widget.domId);
+
+            var widgetChart = $widget.find('.widget-chart');
+            var widgetEdit = $widget.find('.widget-edit');
+            var widgetTable = $widget.find('.widget-table');
 
             widgetChart.hide();
             widgetEdit.hide();
@@ -272,37 +313,21 @@
             }
         }
 
-        function toggleMoving(context) {
+        function showCharty(wid) {
 
-            var moveIcon = $(context).find('.widget-mover');
-            if ($(moveIcon).hasClass('widget-movable')) {
-                $(context).draggable({disabled: true});
-                $(moveIcon).removeClass('widget-movable');
-                $(moveIcon).addClass('widget-immovable');
-            } else {
-                $(context).draggable({disabled: false});
-                $(moveIcon).removeClass('widget-immovable');
-                $(moveIcon).addClass('widget-movable');
-            }
-        }
-
-        function showCharty(context, wid) {
-
-            showOne(context, 'chart', wid);
+            showOne('chart', wid);
             var widget = widgetList[wid];
             setTimeout(function () {
                 drawChart(widget);
             },0);
         }
 
-        function showTably(context, wid) {
-
-            showOne(context, 'table');
-            makeTimeSeries(widgetList[wid]);
+        function showTably(wid) {
+            showOne('table', wid);
         }
 
-        function showEdity(context) {
-            showOne(context, 'edit');
+        function showEdity(wid) {
+            showOne('edit', wid);
         }
 
 
@@ -312,11 +337,20 @@
 
         widgetHelpers = {
 
-            widgetFactory: function widgetFactory() {
+            widgetFactory: function widgetFactory(instrument) {
 
-                var idx = this.countWidgets();  // get the new index from the widgetList
-                widgetList[idx] = new Widget(idx);
-                return widgetList[idx];
+                var wid = this.countWidgets();  // get the new index from the widgetList
+                var widget = widgetList[wid] = new Widget(wid);
+
+                // TODO - refactor instrument choosing !!
+                switch(instrument) {
+                    case 'pension':
+                        widget.ko = new PensionViewModel({wid: wid});
+                        var baseViewModel = new BaseViewModel(widget.ko);
+                        extend(baseViewModel, widget.ko);
+                        break;
+                }
+                return widget;
             },
 
             countWidgets: function () {
@@ -357,7 +391,6 @@
                     // find target element
                     var targetEle = '';
                     if ($(e.target).hasClass('widget-slayer')) targetEle = 'slayer';
-                    if ($(e.target).hasClass('widget-mover')) targetEle = 'mover';
                     if ($(e.target).hasClass('widget-charter')) targetEle = 'charter';
                     if ($(e.target).hasClass('widget-tabler')) targetEle = 'tabler';
                     if ($(e.target).hasClass('widget-editer')) targetEle = 'editer';
@@ -370,19 +403,15 @@
                             this.remove();
                             break;
                         case 'charter':
-                            showCharty(this, wid);
+                            showCharty(wid);
                             widgetHelpers.setZIndexes(wid);
                             break;
                         case 'tabler':
-                            showTably(this, wid);
+                            showTably(wid);
                             widgetHelpers.setZIndexes(wid);
                             break;
                         case 'editer':
-                            showEdity(this, wid);
-                            widgetHelpers.setZIndexes(wid);
-                            break;
-                        case 'mover':
-                            toggleMoving(this, wid);
+                            showEdity(wid);
                             widgetHelpers.setZIndexes(wid);
                             break;
                         case 'instrument':
@@ -390,7 +419,7 @@
                             widgetHelpers.setZIndexes(wid);
                             break;
                         case 'edit-stage':
-                            chooseStage(e.target, wid);
+                            chooseStage(wid);
                             widgetHelpers.setZIndexes(wid);
                             break;
                         default:
@@ -398,41 +427,68 @@
                             break;
                     }
                 }
-            }
+            },
+
+            chooseStage: chooseStage,
+            showCharty: showCharty
         };
     })();    // End Widget Helpers Code
 
 
-    function placeWidget(newWidget) {
+    function applyBindings(widget) {
 
-        $wc.append(newWidget.html);
-        var clickedFn = widgetHelpers.widgetClickHandler(newWidget.idx);
+        var domEle = document.getElementById(widget.domId);
+        ko.applyBindings(widget.ko, domEle);
+    }
+
+
+    function placeWidget(widget) {
+
+        // get window size and place randomly
+        var viewportWidth = $(window).width();
+        var viewportHeight = $(window).height();
+        var xrange = (viewportWidth - WIDGET_WIDTH) > 0 ? viewportWidth - WIDGET_WIDTH : 100;
+        var yrange = (viewportHeight - WIDGET_HEIGHT - 35) > 0 ? viewportHeight - WIDGET_HEIGHT - 35 : 100;
+        var xPlace = Math.floor((Math.random() * 40));
+        var yPlace = Math.floor((Math.random() * 40)) + 35;
+
+        $wc.append(widget.html);
+        var clickedFn = widgetHelpers.widgetClickHandler(widget.idx);
 
         setTimeout(function () {
 
-            var $nwd = $('#' + newWidget.domId);
-            $nwd.draggable();
+            var $nwd = $('#' + widget.domId);
+            $nwd.draggable({handle: '.widget-header'});
+
             if (RESIZABLE) $nwd.resizable();
 
             // set z-index
-            $nwd.css('z-index', newWidget.z);
-            $nwd.css('left', 10 + newWidget.idx * 3);
-            $nwd.css('top', 40 + newWidget.idx * 3);
+            $nwd.css('z-index', widget.z);
+            $nwd.css('left', xPlace);
+            $nwd.css('top', yPlace);
             $nwd.on('click', clickedFn);
-            widgetHelpers.setZIndexes(newWidget.idx);
+            widgetHelpers.setZIndexes(widget.idx);
 
         }, 0);
+
+    }
+
+    function showHelp() {
+        console.log(' would show help ');
+
     }
 
     function addWidget() {
 
-        var newWidget = widgetHelpers.widgetFactory();
+        // TODO - fix this so you can choose type
+        var newWidget = widgetHelpers.widgetFactory('pension');
 
         var widgetTemplate = templateCompiledList['widget-template'];
 
         var widgetData = {
             widgetDomId: newWidget.domId,
             widgetChartId: newWidget.chartId,
+            widgetTableId: newWidget.tableId,
             widgetId: newWidget.idx,
             widgetEditStage1: newWidget.editStage1Id,
             widgetEditStage2: newWidget.editStage2Id,
@@ -447,12 +503,13 @@
 
     function registerEventListeners() {
 
-
         // attach to add widget button
         var $addWidget = $('#add-widget');
         $addWidget.on('click', addWidget);
 
+        $('#show-help').colorbox({href: function(){ return $(this).attr('data-href') + '#help-content';}, width: "80%", height: "80%"});
     }
+
 
     function drawChart(widget) {
 
@@ -469,8 +526,8 @@
             },
 
             series : [{
-                name : 'Uppy',
-                data : widget.timeSeries,
+                name : 'Balance',
+                data : widget.chartData,
                 tooltip: {
                     valueDecimals: 2
                 }
@@ -481,25 +538,14 @@
 
     function init() {
 
-        compileTemplates(); // Get the Handlebars Templates and compile them
+        compileTemplates(templateIdList, templateCompiledList); // Get the Handlebars Templates and compile them
         $wc = $('#widgetsContainer');
         registerEventListeners();
         widgetHelpers.initWidgets();
-
     }
-
 
     // Dom Ready Handler
     $(function() {
         init();
     });
-
 })();
-/*
-
- if ($.isEmptyObject(container1VM)) {
- container1VM = new ContainerViewModel();
- ko.applyBindings(container1VM, document.getElementById("container3"));
- }
-
- */
