@@ -175,7 +175,8 @@ h4 {  font-size: 1.1em;  }
 }
 
 div.editer-header span, div.editer-body span {
-  width: 125px;
+  /* width: 125px; */
+  margin-left: 20px; /* Temporary Hack */
   display: inline-block;
 }
 #help-content {
