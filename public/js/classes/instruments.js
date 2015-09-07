@@ -37,7 +37,7 @@ function BaseViewModel(context) {
         self.tableEntries(null);
         self.tableEntries(data);
 
-        makeChartSeries(wid, function () {
+        orchestrators.makeChartSeries(wid, function () {
 
         });
     };
@@ -103,7 +103,7 @@ function PensionViewModel(opts) {
         attributes.step = self.step();
         attributes.lump = self.lump();
 
-        goToTablyWithDates(wid);
+        orchestrators.goToTablyWithDates(wid);
     };
 
 
@@ -114,7 +114,7 @@ function PensionViewModel(opts) {
         var attributes = widget.attributes;
 
 
-        makeChartSeries(wid, function () {
+        orchestrators.makeChartSeries(wid, function () {
             console.log(' Make Chart Series Callback called from saveEntries');
         })
 
