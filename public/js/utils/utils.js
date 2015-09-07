@@ -2,16 +2,6 @@
 //*******************************************************************************
 // Functions for General Use
 
-var extend = function extend(base, child) {
-
-    for (var fn in base) {
-
-        if(base.hasOwnProperty(fn)) {
-            child[fn] = base[fn];
-        }
-    }
-};
-
 
 function alertMessage(message) {
     alert(message);

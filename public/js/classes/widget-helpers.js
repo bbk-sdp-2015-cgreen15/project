@@ -262,9 +262,16 @@
             // TODO - refactor instrument choosing !!
             switch(instrument) {
                 case 'pension':
+
+                    // Implement Factory Method
+
                     widget.ko = new PensionViewModel({wid: wid});
                     var baseViewModel = new BaseViewModel(widget.ko);
                     extend(baseViewModel, widget.ko);
+                    //
+                    //widget.ko = classFactory(widget.ko, 'pension');
+
+
                     break;
             }
             return widget;

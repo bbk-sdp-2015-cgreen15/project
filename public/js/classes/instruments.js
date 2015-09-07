@@ -1,7 +1,92 @@
 
 
+var extend = function extend(base, child) {
+
+    for (var fn in base) {
+
+        if(base.hasOwnProperty(fn)) {
+            child[fn] = base[fn];
+        }
+    }
+};
+
+
+var mixin = function mixin(donor, recipient) {
+
+    for (var fn in donor) {
+
+        if(donor.hasOwnProperty(fn)) {
+            recipient[fn] = donor[fn];
+        }
+    }
+};
+
+
+
+/*
+
+     switch(instrument) {
+     case 'pension':
+
+     // Implement Factory Method
+
+     widget.ko = new PensionViewModel({wid: wid});
+     var baseViewModel = new BaseViewModel(widget.ko);
+     extend(baseViewModel, widget.ko);
+     break;
+
+
+     var inst = new Top
+
+     }
+
+ */
+
+
+var classFactory = function classFactory(recipient, className) {
+
+    // This models the class hierarchy
+
+    switch(className) {
+
+        case 'pension':
+            //
+            //var inst = new Instrument(context);
+            //inst = new SaveInstrument(inst);
+            //extend(inst, context);
+
+            recipient = new PensionViewModel(recipient);
+            var base = new BaseViewModel(recipient);
+            mixin(base, recipient);
+
+            break;
+
+    }
+
+
+
+};
+
+function Instrument(context) {
+    // Abstract Base Class
+    var self = context;
+}
+
+function DebtInstrument(context) {
+    // Abstract
+    var self = context;
+}
+
+function SaveInstrument(context) {
+    // Abstract
+    var self = context;
+}
+
+// MIXINS !!
 
 function BaseViewModel(context) {
+
+    // extends
 
     var self = context;
 
@@ -53,6 +138,10 @@ function BaseViewModel(context) {
 
 
 function PensionViewModel(opts) {
+
+
+    // extends BaseViewModel
+    //
 
     var self = this;
 
