@@ -9,9 +9,6 @@
     //*******************************************************************************
     // Private Functions for Widget Helpers
 
-    // TODO - fix the Keith Wood KO datepickers issue !
-
-
     function applyBindings(widget) {
 
         var domEle = document.getElementById(widget.domId);
@@ -293,14 +290,6 @@
                 }
             }
             $('#widgetId_' + wid).css('z-index', 32);
-        },
-
-
-        showWidgetKeys: function () {
-
-            var keys = Object.keys(widgetList);
-            console.log(" Widget Keys is ");
-            console.log(keys);
         },
 
 
