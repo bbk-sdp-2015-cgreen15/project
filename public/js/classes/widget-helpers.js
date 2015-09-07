@@ -268,8 +268,9 @@
                     widget.ko = new PensionViewModel({wid: wid});
                     var baseViewModel = new BaseViewModel(widget.ko);
                     extend(baseViewModel, widget.ko);
-                    //
-                    //widget.ko = classFactory(widget.ko, 'pension');
+
+                    // TODO - Fix This !
+                    // widget.ko = classFactory(widget.ko, 'pension', wid);
 
 
                     break;

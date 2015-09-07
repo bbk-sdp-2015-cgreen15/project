@@ -1,23 +1,81 @@
-
-
 // TODO - TimeSeries Handler !!
 
 var ONE_SECOND = 1000;
-var ONE_DAY = ONE_SECOND * 60 * 60 * 24;
-var ONE_YEAR = ONE_DAY * 365;
-var DAYS_IN_YEAR = 365;
+var ONE_MINUTE = 60 * ONE_SECOND;
+var ONE_DAY = ONE_MINUTE * 60 * 24;
+
+var MONTHS_LOOKUP = {
+    'Jan': 0,
+    'Feb': 1,
+    'Mar': 2,
+    'Apr': 3,
+    'May': 4,
+    'Jun': 5,
+    'Jul': 6,
+    'Aug': 7,
+    'Sep': 8,
+    'Oct': 9,
+    'Nov': 10,
+    'Dec': 11
+};
+
 
 var PensionChartData = function PensionChartData() {
 
-    function makeChartData(opts) {
+    function tableEntryEpoch(tableEntries) {
 
-        // opts should include the day of the month on which the payment is made
+        var i = 0;
+        var dateParts;
+        for(i =0 ; i < tableEntries.length; i++) {
 
-        var day = 0;
+            var tableEntry = tableEntries[i];
+            dateParts = tableEntry.date.split('-');
 
-        // TODO - Get the Monthly Inputs from the Time Series
-        var monthly = Number(opts.monthly);
-        var balance = Number(opts.lump);
+            var monthVal = MONTHS_LOOKUP[dateParts[1]];
+            var day = dateParts[0];
+            var year = dateParts[2];
+
+            var date = new Date(year,monthVal,day);
+            var offsetMins =  date.getTimezoneOffset();
+            tableEntry.epochOther = date.getTime(); // compensate for timezone / summertime etc
+            tableEntry.epoch = date.getTime() - (offsetMins * ONE_MINUTE); // compensate for timezone / summertime etc
+
+            tableEntry.offset = offsetMins;
+        }
+    }
+
+    function tableEntriesToSparseTimeSeries(tableEntries) {
+
+        var sparseTimeSeries = {};
+
+        var i = 0;
+        for(i = 0 ; i < tableEntries.length; i++) {
+
+            var tableEntry = tableEntries[i];
+            var epoch = tableEntry.epoch;
+            var amount = Number(tableEntry.amount);
+
+            sparseTimeSeries[epoch] = {
+                amount: amount,
+                epoch: epoch,
+                balance: 0
+            };
+
+        }
+        return sparseTimeSeries;
+    }
+
+
+    function makeChartData(data) {
+
+        // calculate the epochs for the time entries
+
+        var opts = data.attributes;
+        var tableEntries = data.tableEntries;
+
+        tableEntryEpoch(tableEntries);
+        var sparseTimeSeries = tableEntriesToSparseTimeSeries(tableEntries);
+        var balance = 0;
 
         // Calculate Daily Interest Rate
         var compoundAnnual = 1 + (opts.apr / 100);
@@ -38,80 +96,25 @@ var PensionChartData = function PensionChartData() {
 
         while (epoch <= endTime) {
 
-            var nowDay = new Date(epoch).getDate();
+            balance += balance * dailyFactor;   // calculate daily interest !
 
-            // Work out the day of the month
-            if (nowDay === Number(opts.startDay)) {
-                balance += monthly; // Any extra input
+            if (sparseTimeSeries[epoch]) {
+                balance += Number(sparseTimeSeries[epoch].amount); // any monthly or other payment in
+                sparseTimeSeries[epoch].balance = ((Math.round(balance * 100)) / 100);
             }
 
-            balance += balance * dailyFactor;   // calculate daily interest !
             chartData.push([epoch, balance]);
             epoch += interval;
-
-            day++;  // Not Used
         }
-        return chartData;
+        return {
+            chartData: chartData,
+            sparseTimeSeries: sparseTimeSeries
+        };
     }
-
-    function makeChartDataFromTable(opts) {
-
-
-        var attributes = opts.attributes;
-        console.log(' In makeChartDataFromTable opts is ');
-        console.log(opts);
-
-        // opts should include the day of the month on which the payment is made
-
-        var day = 0;
-
-        // TODO - Get the Monthly Inputs from the Time Series
-        var monthly = Number(attributes.monthly);
-        var balance = Number(attributes.lump);
-
-        // Calculate Daily Interest Rate
-        var compoundAnnual = 1 + (attributes.apr / 100);
-        var compoundDaily = Math.pow(compoundAnnual, (1/365));
-        var dailyFactor = compoundDaily - 1;
-
-        var chartData = [];
-
-        chartData.length = 0;
-
-        var start = attributes.startTime || 1216080000000;
-        start = Number(start);
-        var endTime = Number(attributes.endTime) > start ? attributes.endTime : start + ONE_DAY;
-        endTime = Number(endTime);
-
-        var epoch = start;
-        var interval = ONE_DAY;
-
-        while (epoch <= endTime) {
-
-            var nowDay = new Date(epoch).getDate();
-
-            // Work out the day of the month
-            if (nowDay === Number(attributes.startDay)) {
-                balance += monthly; // Any extra input
-            }
-
-            balance += balance * dailyFactor;   // calculate daily interest !
-            chartData.push([epoch, balance]);
-            epoch += interval;
-
-            day++;  // Not Used
-        }
-        return chartData;
-    }
-
-
-
-
 
 
     return {
-        ts: makeChartData,
-        tst: makeChartDataFromTable
+        ts: makeChartData
     };
 
 };

@@ -43,7 +43,7 @@ var mixin = function mixin(donor, recipient) {
  */
 
 
-var classFactory = function classFactory(recipient, className) {
+var classFactory = function classFactory(widgetModel, className, wid) {
 
     // This models the class hierarchy
 
@@ -55,9 +55,16 @@ var classFactory = function classFactory(recipient, className) {
             //inst = new SaveInstrument(inst);
             //extend(inst, context);
 
-            recipient = new PensionViewModel(recipient);
-            var base = new BaseViewModel(recipient);
-            mixin(base, recipient);
+            widgetModel = new PensionViewModel({wid: wid});
+            var base = new BaseViewModel(widgetModel);
+            extend(base, widgetModel);
+
+            /*
+
+             //widget.ko = new PensionViewModel({wid: wid});
+             //var baseViewModel = new BaseViewModel(widget.ko);
+             //extend(baseViewModel, widget.ko);
+             */
 
             break;
 
