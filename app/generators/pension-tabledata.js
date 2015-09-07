@@ -50,11 +50,14 @@ var PensionTableData = function PensionTableData() {
         var start = opts.startTime || 1216080000000;
         start = Number(start);
         var endTime = Number(opts.endTime) > start ? opts.endTime : start + ONE_DAY;
+        var step = opts.step || 0;
+        var stepPc = 1 + (step/100);
         var day = 0;
         var bal = 0;
         var entryId = 0;
         var monthly = Number(opts.monthly);
         var lump = Number(opts.lump);
+        var loopMonth = 0;
 
 
         // Calculate the loop data
@@ -67,11 +70,22 @@ var PensionTableData = function PensionTableData() {
 
             // Work out the day of the month or first lump sum entry
             if (day === 0) {
+
                 tableData.push(makeEntry(entryId, sD, lump, bal));
                 entryId++;
+
             } else if (nowDay === Number(opts.startDay)) {
+
                 tableData.push(makeEntry(entryId, sD, monthly, bal));
                 entryId++;
+                loopMonth++;
+
+                if (loopMonth == 12) {
+                    monthly = monthly * stepPc;
+                    monthly = ((Math.round(monthly * 100)) / 100);
+                    loopMonth = 0;
+                }
+
             }
             epoch += ONE_DAY;
             day++;
