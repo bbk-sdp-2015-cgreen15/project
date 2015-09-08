@@ -192,15 +192,12 @@
 
         var stage1Id = 'editStage1Id_' + wid;
         var stage2Id = 'editStage2Id_' + wid;
-        var stage3Id = 'editStage3Id_' + wid;
 
         $('#' + stage1Id).hide(SHOWSPEED);
         $('#' + stage2Id).hide(SHOWSPEED);
-        $('#' + stage3Id).hide(SHOWSPEED);
 
         if (STAGE_DETAILS === stage) $('#' + stage1Id).show(SHOWSPEED);
         if (STAGE_TABLE === stage) $('#' + stage2Id).show(SHOWSPEED);
-        if (STAGE_CHART === stage) $('#' + stage3Id).show(SHOWSPEED);
     }
 
 
@@ -319,7 +316,6 @@
                 if ($(e.target).hasClass('widget-tabler')) targetEle = 'tabler';
                 if ($(e.target).hasClass('widget-editer')) targetEle = 'editer';
                 if ($(e.target).hasClass('instrument')) targetEle = 'instrument';
-                if ($(e.target).hasClass('widget-edit-stage')) targetEle = 'edit-stage';
 
                 switch (targetEle) {
 
@@ -340,10 +336,6 @@
                         break;
                     case 'instrument':
                         chooseInstrument(e.target, wid);
-                        widgetHelpers.setZIndexes(wid);
-                        break;
-                    case 'edit-stage':
-                        chooseStage(wid);
                         widgetHelpers.setZIndexes(wid);
                         break;
                     default:

@@ -4,14 +4,19 @@ TODO -
 
 Title on the widget
 
+
+ISA - Start Date
+
+
+
+
+
 NET WORTH !!
 
 some sort of grunt driven linting task
 TESTING !!
 
 Find the stuff from Tim Rampton for Screen Shots !!
-
-Net Worth Thingie
 
 number format 2 digits
 
@@ -32,8 +37,6 @@ put months in utils or constants file
 
 Save - should update series for chart
 
-
-Next - do a Mortgage
 
 Separation of concerns !!
 

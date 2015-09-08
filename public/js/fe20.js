@@ -38,9 +38,7 @@
             $nwd.css('top', yPlace);
             $nwd.on('click', clickedFn);
             widgetHelpers.setZIndexes(widget.idx);
-
         }, 0);
-
     }
 
 
@@ -57,8 +55,7 @@
             widgetTableId: newWidget.tableId,
             widgetId: newWidget.idx,
             widgetEditStage1: newWidget.editStage1Id,
-            widgetEditStage2: newWidget.editStage2Id,
-            widgetEditStage3: newWidget.editStage3Id
+            widgetEditStage2: newWidget.editStage2Id
         };
 
         newWidget.html = widgetTemplate(widgetData);

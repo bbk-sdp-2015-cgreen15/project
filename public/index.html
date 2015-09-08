@@ -77,10 +77,13 @@
 </script>
 
 
+<!-- ISA Stage 1 Template -->
+
+
 <script id="widget-isa-main" type="x-handlebars-template">​
 
 <div class="editer-header">
-    <div>Pension</div>
+    <div>ISA</div>
     <span>Start Date</span><span><input type="text" class="ip-date-start" id="{{widgetStartDateId}}" data-bind="textInput: startDate" /></span>
     <span>End Date</span><span><input type="text" class="ip-date-end" id="{{widgetEndDateId}}"  data-bind="textInput: endDate" /></span>
 </div>
@@ -88,7 +91,6 @@
 <div class="editer-body">
     <span>Growth Rate</span><span><input type="text" class="ip-apr" id="{{widgetAPR}}" value="5.5" data-bind="textInput: apr" />%</span><br >
     <span>Lump</span><span><input type="text" class="ip-lump" value="" data-bind="textInput: lump" /></span><br />
-    <!-- span>Step</span><span><input type="text" class="ip-step" value="" data-bind="textInput: step" />%</span><br / -->
     <span>Monthly</span><span><input type="text" class="ip-monthly" value="" data-bind="textInput: monthly" /></span>
 </div>
 <div>
@@ -96,27 +98,6 @@
 </div>
 
 </script>
-
-
-<!-- ISA Stage 1 Template -->
-
-<!-- script id="widget-isa-main" type="x-handlebars-template">​
-
-<div class="editer-header">
-    <div>ISA</div>
-    <span>Start Date</span> <span><input type="text" class="ip-date-start" id="{{widgetStartDateId}}" /></span><br>
-    <span>End Date</span> <span><input type="text" class="ip-date-end" id="{{widgetEndDateId}}" /></span>
-</div>
-
-<div class="editer-body">
-    <span>Growth Rate</span><span><input type="text" class="ip-apr" id="{{widgetAPR}}" value="5.5" data-bind="textInput: apr" />%</span><br >
-    <span>Lump</span><span><input type="text" class="ip-lump" value="" data-bind="textInput: lump" /></span><br />
-    <span>Monthly</span><span><input type="text" class="ip-monthly" value="" data-bind="textInput: monthly" /></span>
-</div>
-<div>
-    <button data-bind="click: $root.saveStage2">Save</button>
-</div>
-</script -->
 
 
 
@@ -305,8 +286,7 @@
 
             <div class="widget-edit-stages">
                 <span data-stage="1" class="widget-edit-stage stage-1 bolded">Type</span> &gt;
-                <span data-stage="2" class="widget-edit-stage stage-2">Main</span> &gt;
-                <span data-stage="3" class="widget-edit-stage stage-3">Details</span>
+                <span data-stage="2" class="widget-edit-stage stage-2">Main</span>
             </div>
 
             <div class="widget-edit-stage1"  id="{{widgetEditStage1}}" >
@@ -330,7 +310,6 @@
                 <!-- End Stage 1 -->
             </div>
             <div class="widget-edit-stage2" id="{{widgetEditStage2}}"></div>
-            <div class="widget-edit-stage3" id="{{widgetEditStage3}}"></div>
         </div>
     </div>
 </div>
