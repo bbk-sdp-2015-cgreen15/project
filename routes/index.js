@@ -27,8 +27,25 @@ function handler_tabledata(req, res) {
 
   // TODO - get by type
 
+  var tableData;
+
   var body = req.body;
-  var tableData = ptd.td(body);
+
+  console.log(' In Here Body is ');
+  console.log(body);
+  var instrument;
+
+  switch (instrument) {
+    case 'pension':
+
+      tableData = ptd.td(body);
+          break;
+
+    default:
+
+      tableData = ptd.td(body);
+          break;
+  }
 
   res.setHeader('Content-Type', 'application/json');
   res.send(JSON.stringify(tableData));

@@ -15,7 +15,6 @@
         ko.applyBindings(widget.ko, domEle);
     }
 
-
     function applyDatePickers(wid) {
 
         var $start = $('#startDateId_' + wid);
@@ -34,25 +33,47 @@
         console.log(' Would Add Credit Card');
     }
 
+    function addLoan(wid) {
+        console.log(' Would Add Loan');
+    }
+
     function addPension(wid) {
 
         var widget = widgetList[wid];
-        console.log(' In Add Pension widget is ' , widget );
-        addTable(wid, 'pension');
+
+        widget.ko = new PensionViewModel({wid: wid});
+        var baseSaveViewModel = new BaseSaveViewModel(widget.ko);
+        extend(baseSaveViewModel, widget.ko);
 
         setTimeout(function () {
+            addTable(wid, 'pension');
+        }, 25);
+        setTimeout(function () {
             applyBindings(widget);
-        }, 0);
+        }, 50);
     }
 
     function addISA(wid) {
-        console.log(' Would Add ISA');
+
+        var widget = widgetList[wid];
+
+        widget.ko = new IsaViewModel({wid: wid});
+        var baseSaveViewModel = new BaseSaveViewModel(widget.ko);
+        extend(baseSaveViewModel, widget.ko);
+
+        setTimeout(function () {
+            addTable(wid, 'pension');
+        }, 25);
+        setTimeout(function () {
+            applyBindings(widget);
+        }, 50);
     }
+
 
     function addTable(wid) {
 
         var widget = widgetList[wid];
-        var instrument = widget.instrument || 'pension';    // TODO - Fix !
+        var instrument = widget.instrument;
         var templateName = 'widget-' + instrument + '-table';
         var templateHtml= $('#' + templateName).html();
         var templateCompiled = Handlebars.compile(templateHtml);
@@ -106,6 +127,9 @@
                 break;
             case 'cc':
                 addCreditCard(wid);
+                break;
+            case 'loan':
+                addLoan(wid);
                 break;
         }
     }
@@ -254,27 +278,10 @@
 
     widgetHelpers = {
 
-        widgetFactory: function widgetFactory(instrument) {
+        widgetFactory: function widgetFactory() {
 
             var wid = this.countWidgets();  // get the new index from the widgetList
             var widget = widgetList[wid] = new Widget(wid);
-
-            // TODO - refactor instrument choosing !!
-            switch(instrument) {
-                case 'pension':
-
-                    // Implement Factory Method
-
-                    widget.ko = new PensionViewModel({wid: wid});
-                    var baseViewModel = new BaseViewModel(widget.ko);
-                    extend(baseViewModel, widget.ko);
-
-                    // TODO - Fix This !
-                    // widget.ko = classFactory(widget.ko, 'pension', wid);
-
-
-                    break;
-            }
             return widget;
         },
 

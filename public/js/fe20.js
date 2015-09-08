@@ -47,7 +47,7 @@
     function addWidget() {
 
         // TODO - fix this so you can choose type
-        var newWidget = widgetHelpers.widgetFactory('pension');
+        var newWidget = widgetHelpers.widgetFactory();
 
         var widgetTemplate = templateCompiledList['widget-template'];
 
