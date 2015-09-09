@@ -27,6 +27,21 @@
 
     function addMortgage(wid) {
         console.log(' Would Add Mortgage');
+
+        // PensionViewModel
+
+        var widget = widgetList[wid];
+
+        widget.ko = new MortgageViewModel({wid: wid});
+        var baseDebtViewModel = new BaseDebtViewModel(widget.ko);
+        extend(baseDebtViewModel, widget.ko);
+
+        setTimeout(function () {
+            addTable(wid, 'pension');
+        }, 25);
+        setTimeout(function () {
+            applyBindings(widget);
+        }, 50);
     }
 
     function addCreditCard(wid) {
@@ -344,10 +359,7 @@
                 }
             }
         },
-
         chooseStage: chooseStage,
         showCharty: showCharty
     };
-
 })();    // End Widget Helpers Code
-

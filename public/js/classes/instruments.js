@@ -88,10 +88,6 @@ function IsaViewModel(opts) {
 
     // Update Functions
 
-    self.addItem = function () {
-        self.myItems.push(Math.random().toString());
-    };
-
     self.saveStage2 = function () {
 
         var wid = self._opts.wid;
@@ -154,10 +150,6 @@ function PensionViewModel(opts) {
 
     // Update Functions
 
-    self.addItem = function () {
-        self.myItems.push(Math.random().toString());
-    };
-
     self.saveStage2 = function () {
 
         var wid = self._opts.wid;
@@ -203,3 +195,122 @@ function PensionViewModel(opts) {
 
     return self;
 }
+
+
+
+function BaseDebtViewModel(context) {
+
+    // extends
+
+    var self = context;
+
+    self.startDate = ko.observable();
+    self.tableEntries = ko.observableArray([]);
+
+    self.setOpts = function (opts) {
+        self._opts = opts || {};
+    };
+
+    self.copyDown = function (e) {
+
+        var wid = self._opts.wid;
+
+        var entryId = e.entryId;
+        var entry = self.tableEntries()[entryId];
+        var oldEntries = self.tableEntries();
+        var newValue = Number(entry.amount);
+        var entriesLength = oldEntries.length;
+
+        var entryToChange = {};
+
+        for (var i = 0; i < entriesLength; i++) {
+
+            if (i < entryId) continue;
+            entryToChange = oldEntries[i];
+            entryToChange.amount = newValue;
+            self.tableEntries.splice(i, 1, entryToChange); // Replace the entry at the appropriate index
+        }
+
+        var data = self.tableEntries();
+        self.tableEntries(null);
+        self.tableEntries(data);
+
+        //orchestrators.makeChartSeries(wid, function () {
+        //
+        //});
+    };
+
+    return self;
+}
+
+
+function MortgageViewModel(opts) {
+
+    var self = this;
+
+    self._opts = opts || {};
+    self.model = {};
+
+    self.apr = ko.observable("4");
+    self.monthly = ko.observable("2000");
+    self.loan = ko.observable("300000");
+
+
+    // Update Functions
+
+    self.saveStage2 = function () {
+
+        var wid = self._opts.wid;
+        var widget = widgetList[wid];
+        var attributes = widget.attributes;
+        var day = 32;
+
+        attributes.type = widget.type;
+
+        // start date ID is
+        var startDateId = '#startDateId_' + wid.toString();
+        var $startDate = $(startDateId).val();
+        attributes.startDate = $startDate;  // Hmmm, apply bindings doesn't work ...
+
+        var startDate = $.datepicker.parseDate(DATE_FORMAT, attributes.startDate);
+        var startOffset = startDate.getTimezoneOffset();
+        attributes.startTime = startDate.getTime() - (startOffset * ONE_MINUTE);
+        day = new Date(attributes.startTime).getDate();
+
+        attributes.startDay = day > 28 ? 28 : day;
+        attributes.monthly = self.monthly();
+        attributes.apr = self.apr();
+
+        console.log(' Mortgage Attributes ');
+        console.log(attributes);
+
+        // orchestrators.goToTablyWithDates(wid);
+    };
+
+
+    self.saveEntries = function () {
+
+        var wid = self._opts.wid;
+        var widget = widgetList[wid];
+        var attributes = widget.attributes;
+
+
+        orchestrators.makeChartSeries(wid, function () {
+            console.log(' Make Chart Series Callback called from saveEntries');
+        })
+    };
+
+    return self;
+}
+
+
+
+
+
+
+
+
+
+
+
+
