@@ -1,4 +1,4 @@
-// TODO - TimeSeries Handler !!
+
 
 var ONE_SECOND = 1000;
 var ONE_MINUTE = 60 * ONE_SECOND;
@@ -20,12 +20,13 @@ var MONTHS_LOOKUP = {
 };
 
 
-var PensionChartData = function PensionChartData() {
+var MortgageChartData = function MortgageChartData() {
 
     function tableEntryEpoch(tableEntries) {
 
         var i;
         var dateParts;
+
         for(i = 0 ; i < tableEntries.length; i++) {
 
             var tableEntry = tableEntries[i];
@@ -75,7 +76,8 @@ var PensionChartData = function PensionChartData() {
 
         tableEntryEpoch(tableEntries);
         var sparseTimeSeries = tableEntriesToSparseTimeSeries(tableEntries);
-        var balance = 0;
+        var balance = Number(opts.loan);
+
 
         // Calculate Daily Interest Rate
         var compoundAnnual = 1 + (opts.apr / 100);
@@ -83,22 +85,18 @@ var PensionChartData = function PensionChartData() {
         var dailyFactor = compoundDaily - 1;
 
         var chartData = [];
-
         chartData.length = 0;
 
-        var start = opts.startTime || 1216080000000;
-        start = Number(start);
-        var endTime = Number(opts.endTime) > start ? opts.endTime : start + ONE_DAY;
-        endTime = Number(endTime);
-
-        var epoch = start;
+        var end = opts.endTime || 1216080000000;
+        var endTime = Number(end);
+        var epoch = opts.startTime || 1216080000000;
 
         while (epoch <= endTime) {
 
             balance += balance * dailyFactor;   // calculate daily interest !
 
             if (sparseTimeSeries[epoch]) {
-                balance += Number(sparseTimeSeries[epoch].amount); // any monthly or other payment in
+                balance -= Number(sparseTimeSeries[epoch].amount); // any monthly or other payment in comes off balance
                 sparseTimeSeries[epoch].balance = ((Math.round(balance * 100)) / 100);
             }
 
@@ -115,6 +113,7 @@ var PensionChartData = function PensionChartData() {
     return {
         ts: makeChartData
     };
+
 };
 
-module.exports = PensionChartData;
+module.exports = MortgageChartData;

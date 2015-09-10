@@ -180,7 +180,7 @@
         var typeList = $(context).data('inst-type');
         var typeParts = typeList.split('-');
         widget.type = typeParts[0];
-        widget.editStage1Value = widget.instrument = typeParts[1];
+        widget.editStage1Value = widget.attributes.instrument = widget.instrument = typeParts[1];
 
         addInstrument(wid);
 
@@ -261,8 +261,6 @@
 
 
     function drawChart(widget) {
-
-        // GET CHART DATA FROM WIDGET MODEl !!!
 
         $('#' + widget.chartId).highcharts('StockChart', {
 

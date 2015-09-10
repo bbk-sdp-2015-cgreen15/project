@@ -16,12 +16,12 @@ var Widget = function Widget(idx) {
     this.editStage3Id = 'editStage3Id_' + idx.toString();
     this.editStage1Value = null;
     this.editStage2Value = null;
-    this.editStage3Value = null;
     this.ko = {}; // Knockout Model !
 
     this.chartData = [];
     this.attributes = {
-        type: null
+        type: null,
+        instrument: null
     };
 
     return this;

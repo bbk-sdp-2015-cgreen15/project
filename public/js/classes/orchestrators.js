@@ -9,7 +9,6 @@
 
 var orchestrators = {
 
-
     goToTablyWithDates: function goToTablyWithDates(wid) {
 
         var widget = widgetList[wid];

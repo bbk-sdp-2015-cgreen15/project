@@ -2,6 +2,56 @@
 
 TODO -
 
+
+refactor backend to have requires
+
+contact dr Ewer MacSweeney again !
+
+Mortgage -
+do either specific end date OR sooner if balance becomes negative
+
+
+
+Start Date
+Loan Amount
+Interest Rate
+Monthly Payment
+
+
+STEPS -
+
+
+Template with these inputs
+Table Template with copy down etc
+
+
+sparseTimeSeries -
+
+same day of month for payment amortise it
+
+
+
+Output on Table Template of Final Date and Final Payment
+
+
+DONE
+
+
+
+NEXT
+
+
+Stepped Interest Rate
+
+
+
+
+
+
+
+
+
+
 Title on the widget
 
 
@@ -11,7 +61,6 @@ ISA - Start Date
 
 
 
-NET WORTH !!
 
 some sort of grunt driven linting task
 TESTING !!
@@ -24,8 +73,7 @@ show interest rate on chart
 
 add inputs as spikes to the chart
 
-Mortgage -
-do either specific end date OR sooner if balance becomes negative
+
 
 set chart to full range y default
 

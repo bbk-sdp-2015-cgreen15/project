@@ -121,8 +121,6 @@ function IsaViewModel(opts) {
     self.saveEntries = function () {
 
         var wid = self._opts.wid;
-        var widget = widgetList[wid];
-
 
         orchestrators.makeChartSeries(wid, function () {
             console.log(' Make Chart Series Callback called from saveEntries');
@@ -131,7 +129,6 @@ function IsaViewModel(opts) {
 
     return self;
 }
-
 
 
 
@@ -146,7 +143,6 @@ function PensionViewModel(opts) {
     self.step = ko.observable("0");
     self.monthly = ko.observable("50");
     self.lump = ko.observable("1000");
-
 
     // Update Functions
 
@@ -184,9 +180,6 @@ function PensionViewModel(opts) {
     self.saveEntries = function () {
 
         var wid = self._opts.wid;
-        var widget = widgetList[wid];
-        var attributes = widget.attributes;
-
 
         orchestrators.makeChartSeries(wid, function () {
             console.log(' Make Chart Series Callback called from saveEntries');
@@ -205,6 +198,7 @@ function BaseDebtViewModel(context) {
     var self = context;
 
     self.startDate = ko.observable();
+    self.endDate = ko.observable();
     self.tableEntries = ko.observableArray([]);
 
     self.setOpts = function (opts) {
@@ -235,9 +229,9 @@ function BaseDebtViewModel(context) {
         self.tableEntries(null);
         self.tableEntries(data);
 
-        //orchestrators.makeChartSeries(wid, function () {
-        //
-        //});
+        orchestrators.makeChartSeries(wid, function () {
+
+        });
     };
 
     return self;
@@ -263,7 +257,7 @@ function MortgageViewModel(opts) {
         var wid = self._opts.wid;
         var widget = widgetList[wid];
         var attributes = widget.attributes;
-        var day = 32;
+        var day;
 
         attributes.type = widget.type;
 
@@ -271,29 +265,37 @@ function MortgageViewModel(opts) {
         var startDateId = '#startDateId_' + wid.toString();
         var $startDate = $(startDateId).val();
         attributes.startDate = $startDate;  // Hmmm, apply bindings doesn't work ...
-
         var startDate = $.datepicker.parseDate(DATE_FORMAT, attributes.startDate);
         var startOffset = startDate.getTimezoneOffset();
         attributes.startTime = startDate.getTime() - (startOffset * ONE_MINUTE);
+
+        // end date ID is
+        var endDateId = '#endDateId_' + wid.toString();
+        var $endDate = $(endDateId).val();
+        attributes.endDate = $endDate;  // Hmmm, apply bindings doesn't work ...
+        var endDate = $.datepicker.parseDate(DATE_FORMAT, attributes.endDate);
+        var endOffset = endDate.getTimezoneOffset();
+        attributes.endTime = endDate.getTime() - (endOffset * ONE_MINUTE);
+        
+        
+        
         day = new Date(attributes.startTime).getDate();
 
         attributes.startDay = day > 28 ? 28 : day;
         attributes.monthly = self.monthly();
         attributes.apr = self.apr();
+        attributes.loan = self.loan();
 
         console.log(' Mortgage Attributes ');
         console.log(attributes);
 
-        // orchestrators.goToTablyWithDates(wid);
+        orchestrators.goToTablyWithDates(wid);
     };
 
 
     self.saveEntries = function () {
 
         var wid = self._opts.wid;
-        var widget = widgetList[wid];
-        var attributes = widget.attributes;
-
 
         orchestrators.makeChartSeries(wid, function () {
             console.log(' Make Chart Series Callback called from saveEntries');
@@ -302,15 +304,3 @@ function MortgageViewModel(opts) {
 
     return self;
 }
-
-
-
-
-
-
-
-
-
-
-
-
