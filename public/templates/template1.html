@@ -42,6 +42,8 @@ Growth Rate: %<input type="text" class="ip-apr" id="{{widgetAPR}}" value="5.5"/>
 </script>
 
 
+<!-- Mortgage Main -->
+
 <script id="widget-mortgage-main" type="x-handlebars-template">​
 
 <div class="editer-header">
@@ -60,7 +62,27 @@ Growth Rate: %<input type="text" class="ip-apr" id="{{widgetAPR}}" value="5.5"/>
 
 
 
-        <!-- TABLES -->
+<!-- Loan Main -->
+
+<script id="widget-loan-main" type="x-handlebars-template">​
+
+<div class="editer-header">
+    <div>Loan</div>
+    <span>Start Date</span><span><input type="text" class="ip-date-start" id="{{widgetStartDateId}}" /></span>
+    <span>End Date</span><span><input type="text" class="ip-date-end" id="{{widgetEndDateId}}" /></span>
+</div>
+
+<div class="editer-body">
+    <span>Interest Rate</span><span><input type="text" class="ip-apr" id="{{widgetAPR}}" value="3.99"/>%</span><br>
+    <span>Loan Amount</span><span><input type="text" class="ip-loan" value="" data-bind="textInput: loan" /></span><br>
+    <span>Monthly Pmt</span><span><input type="text" class="ip-monthly" value="" data-bind="textInput: monthly" /></span>
+</div>
+</script>
+
+
+
+
+<!-- TABLES -->
 <!-- PENSION Table -->
 
 <script  id="widget-pension-table" type="x-handlebars-template">​

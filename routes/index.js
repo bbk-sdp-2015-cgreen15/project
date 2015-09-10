@@ -38,20 +38,20 @@ function handler_tsp(req, res) {
   console.log(instrument);
 
   switch (instrument) {
+
     case 'pension':
     case 'isa':
-console.log('**** using pcd ');
+
       chartData = pcd.ts(body);
       break;
 
     case 'mortgage':
+    case 'loan':
 
-      console.log('**** using mcd ');
       chartData = mcd.ts(body);
       break;
 
     default:
-      console.log('**** using default ');
       chartData = pcd.ts(body);
       break;
   }
@@ -88,6 +88,7 @@ var instrument = attributes.instrument || '';
           break;
 
     case 'mortgage':
+    case 'loan':
 
       tableData = mtd.td(body);
       break;

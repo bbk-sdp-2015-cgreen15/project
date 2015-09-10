@@ -1,15 +1,12 @@
-
-
 //*******************************************************************************
 // Widget Helpers - various UI Functions
 
-
-(function () {
+widgetHelpers = (function () {
 
     //*******************************************************************************
     // Private Functions for Widget Helpers
 
-    function applyBindings(widget) {
+    function applyKnockoutBindings(widget) {
 
         var domEle = document.getElementById(widget.domId);
         ko.applyBindings(widget.ko, domEle);
@@ -25,31 +22,48 @@
         $end.datepicker('option', 'dateFormat', DATE_FORMAT);
     }
 
-    function addMortgage(wid) {
-        console.log(' Would Add Mortgage');
 
-        // PensionViewModel
+    // TODO - Refactor These Functions !
+
+    function addMortgage(wid) {
 
         var widget = widgetList[wid];
 
         widget.ko = new MortgageViewModel({wid: wid});
-        var baseDebtViewModel = new BaseDebtViewModel(widget.ko);
-        extend(baseDebtViewModel, widget.ko);
+
+        var debtViewModel = new DebtViewModel(widget.ko);
+        extend(debtViewModel, widget.ko);
+
+        var baseDebtViewModel = new BaseDebtViewModel(debtViewModel);
+        extend(baseDebtViewModel, debtViewModel);
 
         setTimeout(function () {
-            addTable(wid, 'pension');
+            addTable(wid, 'mortgage');
         }, 25);
         setTimeout(function () {
-            applyBindings(widget);
+            applyKnockoutBindings(widget);
         }, 50);
     }
 
-    function addCreditCard(wid) {
-        console.log(' Would Add Credit Card');
-    }
 
     function addLoan(wid) {
-        console.log(' Would Add Loan');
+
+        var widget = widgetList[wid];
+
+        widget.ko = new LoanViewModel({wid: wid});
+
+        var debtViewModel = new DebtViewModel(widget.ko);
+        extend(debtViewModel, widget.ko);
+
+        var baseDebtViewModel = new BaseDebtViewModel(debtViewModel);
+        extend(baseDebtViewModel, debtViewModel);
+
+        setTimeout(function () {
+            addTable(wid, 'cc');
+        }, 25);
+        setTimeout(function () {
+            applyKnockoutBindings(widget);
+        }, 50);
     }
 
     function addPension(wid) {
@@ -64,7 +78,7 @@
             addTable(wid, 'pension');
         }, 25);
         setTimeout(function () {
-            applyBindings(widget);
+            applyKnockoutBindings(widget);
         }, 50);
     }
 
@@ -77,10 +91,10 @@
         extend(baseSaveViewModel, widget.ko);
 
         setTimeout(function () {
-            addTable(wid, 'pension');
+            addTable(wid, 'isa');
         }, 25);
         setTimeout(function () {
-            applyBindings(widget);
+            applyKnockoutBindings(widget);
         }, 50);
     }
 
@@ -98,10 +112,7 @@
         $ins.html(tableHtml);
     }
 
-
     function addInstrument(wid) {
-
-        // TODO - refactor to use different templates !
 
         var widget = widgetList[wid];
         var instrument = widget.instrument;
@@ -139,9 +150,6 @@
                 break;
             case 'isa':
                 addISA(wid);
-                break;
-            case 'cc':
-                addCreditCard(wid);
                 break;
             case 'loan':
                 addLoan(wid);
@@ -186,7 +194,7 @@
 
         setTimeout(function () {
             chooseStage(wid, 2);
-        }, 900);
+        }, SHOWSPEED);
     }
 
     function chooseStage(wid, stageId) {
@@ -284,9 +292,9 @@
 
 
     //***********************************************
-    // Various UI Helper Functions
+    // EXPOSE A PUBLIC INTERFACE
 
-    widgetHelpers = {
+    return {
 
         widgetFactory: function widgetFactory() {
 
@@ -305,6 +313,10 @@
         },
 
 
+        /**
+         * When a widget is clicked it is brought to the front of the group
+         * @param wid
+         */
         setZIndexes: function (wid) {
             var keys = Object.keys(widgetList);
             for(var i=0; i < keys.length; i++) {
@@ -318,6 +330,12 @@
         },
 
 
+        /**
+         * Various UI elements on the widget may be clicked
+         * this sorts out what happens
+         * @param wid
+         * @returns {Function}
+         */
         widgetClickHandler: function (wid) {
 
             return function (e) {

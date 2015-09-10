@@ -2,11 +2,9 @@
 //*******************************************************************************
 // Functions for General Use
 
-
 function alertMessage(message) {
     alert(message);
 }
-
 
 function compileTemplates(templateIdList, templateCompiledList) {
 
@@ -20,7 +18,6 @@ function compileTemplates(templateIdList, templateCompiledList) {
     }
 }
 
-
 //*****************************************************************************************
 //*****************************************************************************************
 // Pseudo Globals
@@ -28,13 +25,11 @@ function compileTemplates(templateIdList, templateCompiledList) {
 var widgetList = {};    // Hash List !
 
 var ONE_MINUTE = 60 * 1000;
-
 var DATE_FORMAT = "d MM yy";
-var SHOWSPEED = 800;
+var SHOWSPEED = 750;
 
 var STAGE_DETAILS = 1;
 var STAGE_TABLE = 2;
-var STAGE_CHART = 3;
 
 var RESIZABLE = false;
 
@@ -44,7 +39,7 @@ var templateIdList = [
     'widget-template',
     'widget-pension-main',
     'widget-isa-main',
-    'widget-mortgage-main',
-    'widget-cc-main'
+    'widget-loan-main',
+    'widget-mortgage-main'
 ];
 var templateCompiledList = {};

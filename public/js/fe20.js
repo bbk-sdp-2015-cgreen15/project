@@ -1,29 +1,24 @@
 //*******************************************************************************
 // Main Script for handling Widgets etc
 
-
 (function () {
 
     'use strict';
-
-    //*******************************************************************************
-    // Constants + Pseudo Globals
-
 
     var $wc;    // Widget Container
 
     //*******************************************************************************
     // MAIN
 
-
     function placeWidget(widget) {
 
-        // get window size and place randomly
+        // get window size and place randomly within a certain range
         var xPlace = Math.floor((Math.random() * 40));
         var yPlace = Math.floor((Math.random() * 40)) + 35;
 
         $wc.append(widget.html);
-        var clickedFn = widgetHelpers.widgetClickHandler(widget.idx);
+
+        var clickedFn = widgetHelpers.widgetClickHandler(widget.idx);   // Apply UI Bindings
 
         setTimeout(function () {
 
@@ -37,16 +32,15 @@
             $nwd.css('left', xPlace);
             $nwd.css('top', yPlace);
             $nwd.on('click', clickedFn);
-            widgetHelpers.setZIndexes(widget.idx);
+            widgetHelpers.setZIndexes(widget.idx);  // Set this new widget at the top
         }, 0);
     }
 
 
     function addWidget() {
 
-        // TODO - fix this so you can choose type
+        // Make a new widget
         var newWidget = widgetHelpers.widgetFactory();
-
         var widgetTemplate = templateCompiledList['widget-template'];
 
         var widgetData = {
@@ -69,7 +63,9 @@
         var $addWidget = $('#add-widget');
         $addWidget.on('click', addWidget);
 
-        $('#show-help').colorbox({href: function(){ return $(this).attr('data-href') + '#help-content';}, width: "80%", height: "80%"});
+        // This is used for the popup help
+        $('#show-help').colorbox({href: function(){ return $(this).attr('data-href') +
+            '#help-content';}, width: "80%", height: "80%"});
     }
 
 
@@ -83,6 +79,6 @@
 
     // Dom Ready Handler
     $(function() {
-        init();
+        init(); // Only run the initialisation function once the DOM is ready
     });
 })();

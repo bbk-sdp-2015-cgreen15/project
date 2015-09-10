@@ -1,10 +1,6 @@
-
-
-
 //*****************************************************************************************
 //*****************************************************************************************
 // UI Functions
-
 
 
 var orchestrators = {
@@ -12,13 +8,13 @@ var orchestrators = {
     goToTablyWithDates: function goToTablyWithDates(wid) {
 
         var widget = widgetList[wid];
-        var attributes = widget.attributes;
 
-        // Get TableData from the service
+        // Get TableData from the remote service
         $.ajax({
             url: "/app/tabledata",
             type: "post",
-            data: attributes
+            data: widget.attributes
+
         }).success(function (tableData) {
 
             widget.ko.tableEntries(tableData);
@@ -35,7 +31,6 @@ var orchestrators = {
     makeChartSeries: function makeChartSeries(wid, callback) {
 
         var widget = widgetList[wid];
-        var attributes = widget.attributes;
         var tableEntries = widget.ko.tableEntries();
 
         // Get chartData from the service
@@ -43,7 +38,7 @@ var orchestrators = {
             url: "/app/tst",
             type: "post",
             data: JSON.stringify({
-                attributes: attributes,
+                attributes: widget.attributes,
                 tableEntries: tableEntries
             }),
             contentType: "application/json",
@@ -55,7 +50,7 @@ var orchestrators = {
             var sparseTimeSeries = data.sparseTimeSeries;
             console.log('sparseTimeSeries');
             console.log(sparseTimeSeries);
-            orchestrators.updateBalances(wid, sparseTimeSeries);
+            orchestrators.updateBalances(wid, sparseTimeSeries);    // IMPORTANT !
             callback();
         });
     },
@@ -67,6 +62,7 @@ var orchestrators = {
         var tableEntries = widget.ko.tableEntries();
         var i = 0;
 
+        // Get the table entries from the calculated sparse timeseries and populate it back into the UI
         $.each(sparseTimeSeries, function (key, value) {
 
             // update the display balance
@@ -74,16 +70,7 @@ var orchestrators = {
             i++;
         });
 
-        widget.ko.tableEntries(null);
+        widget.ko.tableEntries(null);   // Reset
         widget.ko.tableEntries(tableEntries);
     }
 };
-
-
-
-
-
-
-
-
-

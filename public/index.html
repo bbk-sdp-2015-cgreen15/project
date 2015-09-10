@@ -65,7 +65,7 @@
 </div>
 
 <div class="editer-body">
-    <span>Growth Rate</span><span><input type="text" class="ip-apr" id="{{widgetAPR}}" value="5.5" data-bind="textInput: apr" />%</span><br >
+    <span>Growth Rate</span><span><input type="text" class="ip-apr" id="{{widgetAPR}}" value="" data-bind="textInput: apr" />%</span><br >
     <span>Lump</span><span><input type="text" class="ip-lump" value="" data-bind="textInput: lump" /></span><br />
     <span>Step</span><span><input type="text" class="ip-step" value="" data-bind="textInput: step" />%</span><br />
     <span>Monthly</span><span><input type="text" class="ip-monthly" value="" data-bind="textInput: monthly" /></span>
@@ -125,30 +125,6 @@
 
 
 
-
-<!-- Credit Card Stage 1 Template -->
-
-
-<script id="widget-cc-main" type="x-handlebars-template">​
-
-<div class="editer-header">
-    <div>Credit Card</div>
-    <span>Start Date</span> <span><input type="text" class="ip-date-start" id="{{widgetStartDateId}}" /></span>
-    <span>End Date</span> <span><input type="text" class="ip-date-end" id="{{widgetEndDateId}}" /></span>
-</div>
-
-<div class="editer-body">
-    <span>Interest Rate</span><span><input type="text" class="ip-apr" id="{{widgetAPR}}" value=""/>%</span><br>
-    <span>Loan Amount</span><span><input type="text" class="ip-loan" value="" data-bind="textInput: loan" /></span><br>
-    <span>Monthly Pmt</span><span><input type="text" class="ip-monthly" value="" data-bind="textInput: monthly" /></span>
-</div>
-<div>
-    <button data-bind="click: $root.saveStage2">Save</button>
-</div>
-</script>
-
-
-
 <!-- Loan Stage 1 Template -->
 
 
@@ -161,7 +137,7 @@
 </div>
 
 <div class="editer-body">
-    <span>Interest Rate</span><span><input type="text" class="ip-apr" id="{{widgetAPR}}" value=""/>%</span><br>
+    <span>Interest Rate</span><span><input type="text" class="ip-apr" id="{{widgetAPR}}" value=""  data-bind="textInput: apr" />%</span><br>
     <span>Loan Amount</span><span><input type="text" class="ip-loan" value="" data-bind="textInput: loan" /></span><br>
     <span>Monthly Pmt</span><span><input type="text" class="ip-monthly" value="" data-bind="textInput: monthly" /></span>
 </div>
@@ -248,6 +224,34 @@
 </script>
 
 
+
+
+<!-- LOAN Table -->
+
+<script  id="widget-loan-table" type="x-handlebars-template">​
+
+<div class="widget-table-row widget-table-header">
+    <div class="widget-table-date">Date</div>
+    <div class="widget-table-in">Payment</div>
+    <div class="widget-table-balance">Balance</div>
+    <div><button data-bind="click: $root.saveEntries">Save</button></div>
+</div>
+
+<div class="widget-table-entries">
+    <!-- ko foreach: tableEntries -->
+    <div class="widget-table-row" >
+        <div class="widget-table-date"><input type="text" data-bind="value: date" readonly /></div>
+        <div class="widget-table-in"><input type="text"  data-bind="value: amount" /></div>
+        <div class="widget-table-balance"><input type="text" data-bind="value: balance" /></div>
+        <div><span class="widget-tool-icon" title="Copy Down"><i class="fa fa-arrow-down widget-copy-down"  data-bind="click: $root.copyDown"></i></span></div>
+    </div>
+    <!-- /ko -->
+</div>
+
+</script>
+
+
+
 <!-- End Table Templates -->
 <!-- ********************************************************************************* -->
 
@@ -302,7 +306,6 @@
                     <li class="indent-1">Debt</li>
                     <ul>
                         <li data-inst-type="debt-mortgage" class="instrument">Mortgage</li>
-                        <!-- li data-inst-type="debt-cc" class="instrument">Credit Card</li -->
                         <li data-inst-type="debt-loan" class="instrument">Loan</li>
                     </ul>
 

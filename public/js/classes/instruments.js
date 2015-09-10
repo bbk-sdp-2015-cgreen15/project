@@ -238,17 +238,9 @@ function BaseDebtViewModel(context) {
 }
 
 
-function MortgageViewModel(opts) {
+function DebtViewModel(context) {
 
-    var self = this;
-
-    self._opts = opts || {};
-    self.model = {};
-
-    self.apr = ko.observable("4");
-    self.monthly = ko.observable("2000");
-    self.loan = ko.observable("300000");
-
+    var self = context;
 
     // Update Functions
 
@@ -276,18 +268,13 @@ function MortgageViewModel(opts) {
         var endDate = $.datepicker.parseDate(DATE_FORMAT, attributes.endDate);
         var endOffset = endDate.getTimezoneOffset();
         attributes.endTime = endDate.getTime() - (endOffset * ONE_MINUTE);
-        
-        
-        
+
         day = new Date(attributes.startTime).getDate();
 
         attributes.startDay = day > 28 ? 28 : day;
         attributes.monthly = self.monthly();
         attributes.apr = self.apr();
         attributes.loan = self.loan();
-
-        console.log(' Mortgage Attributes ');
-        console.log(attributes);
 
         orchestrators.goToTablyWithDates(wid);
     };
@@ -303,4 +290,30 @@ function MortgageViewModel(opts) {
     };
 
     return self;
+
+}
+
+
+function MortgageViewModel(opts) {
+
+    var self = this;
+
+    self._opts = opts || {};
+    self.model = {};
+
+    self.apr = ko.observable("3.9");
+    self.monthly = ko.observable("2000");
+    self.loan = ko.observable("300000");
+}
+
+function LoanViewModel(opts) {
+
+    var self = this;
+
+    self._opts = opts || {};
+    self.model = {};
+
+    self.apr = ko.observable("9.9");
+    self.monthly = ko.observable("300");
+    self.loan = ko.observable("15000");
 }
