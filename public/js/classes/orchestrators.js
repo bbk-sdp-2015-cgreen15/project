@@ -35,7 +35,7 @@ var orchestrators = {
 
         // Get chartData from the service
         $.ajax({
-            url: "/app/tst",
+            url: "/app/time-series",
             type: "post",
             data: JSON.stringify({
                 attributes: widget.attributes,

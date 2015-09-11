@@ -3,16 +3,16 @@ var router = express.Router();
 
 //******************************************************************************
 
-var PensionChartData = require('./../app/generators/pension-timeseries');
-var PensionTableData = require('./../app/generators/pension-tabledata');
-var pcd = new PensionChartData();
-var ptd = new PensionTableData();
+var SaveChartData = require('./../app/generators/save-timeseries');
+var SaveTableData = require('./../app/generators/save-tabledata');
+var saveChartData = new SaveChartData();
+var saveTableData = new SaveTableData();
 
 
-var MortgageChartData = require('./../app/generators/mortgage-timeseries');
-var MortgageTableData = require('./../app/generators/mortgage-tabledata');
-var mcd = new MortgageChartData();
-var mtd = new MortgageTableData();
+var DebtChartData = require('./../app/generators/debt-timeseries');
+var DebtTableData = require('./../app/generators/debt-tabledata');
+var debtChartData = new DebtChartData();
+var debtTableData = new DebtTableData();
 
 //******************************************************************************
 
@@ -31,17 +31,17 @@ function handler_tsp(req, res) {
     case 'pension':
     case 'isa':
 
-      chartData = pcd.ts(body);
+      chartData = saveChartData.ts(body);
       break;
 
     case 'mortgage':
     case 'loan':
 
-      chartData = mcd.ts(body);
+      chartData = debtChartData.ts(body);
       break;
 
     default:
-      chartData = pcd.ts(body);
+      chartData = saveChartData.ts(body);
       break;
   }
 
@@ -64,18 +64,18 @@ function handler_tabledata(req, res) {
     case 'pension':
     case 'isa':
 
-      tableData = ptd.td(body);
+      tableData = saveTableData.td(body);
           break;
 
     case 'mortgage':
     case 'loan':
 
-      tableData = mtd.td(body);
+      tableData = debtTableData.td(body);
       break;
 
     default:
 
-      tableData = ptd.td(body);
+      tableData = saveTableData.td(body);
           break;
   }
 
@@ -88,7 +88,7 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-router.post('/app/tst', function(req,res, next) {
+router.post('/app/time-series', function(req,res, next) {
 
   handler_tsp(req, res, next);
 });

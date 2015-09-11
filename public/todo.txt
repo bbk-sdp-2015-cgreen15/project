@@ -3,6 +3,22 @@
 TODO -
 
 
+bug - first balance is wrong on mortgage
+remove copy down from loan
+
+set ISA start and end date to 5th 6th april
+
+Get Loan Working Properly - on remote
+Pre-date MOrtgage with Dates
+Do Backsolver on MOrtgage
+rename mortgage and pension to debt and save'
+
+make graph navigation show the whole date
+
+Do backsolver on loan and do number of years but NOT monthly payment
+Interest Rate Copy DOwn on MOrtgage
+
+
 refactor backend to have requires
 
 contact dr Ewer MacSweeney again !
