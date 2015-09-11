@@ -37,6 +37,11 @@
     }
 
 
+
+    function showNetWorth() {
+        console.log(' Would Show Net Worth ');
+    }
+
     function addWidget() {
 
         // Make a new widget
@@ -62,6 +67,9 @@
         // attach to add widget button
         var $addWidget = $('#add-widget');
         $addWidget.on('click', addWidget);
+
+        var $netWorth = $('#net-worth');
+        $netWorth.on('click', showNetWorth);
 
         // This is used for the popup help
         $('#show-help').colorbox({href: function(){ return $(this).attr('data-href') +
