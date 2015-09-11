@@ -9,9 +9,8 @@ remove copy down from loan
 set ISA start and end date to 5th 6th april
 
 Get Loan Working Properly - on remote
-Pre-date MOrtgage with Dates
-Do Backsolver on MOrtgage
-rename mortgage and pension to debt and save'
+Pre-date Mortgage with Dates
+Do Backsolver on Mortgage
 
 make graph navigation show the whole date
 
@@ -21,7 +20,6 @@ Interest Rate Copy DOwn on MOrtgage
 
 refactor backend to have requires
 
-contact dr Ewer MacSweeney again !
 
 Mortgage -
 do either specific end date OR sooner if balance becomes negative
@@ -52,6 +50,8 @@ Output on Table Template of Final Date and Final Payment
 
 DONE
 
+
+rename mortgage and pension to debt and save'
 
 
 NEXT
