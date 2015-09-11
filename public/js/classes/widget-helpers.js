@@ -23,8 +23,6 @@ widgetHelpers = (function () {
     }
 
 
-    // TODO - Refactor These Functions !
-
     function addMortgage(wid) {
 
         var widget = widgetList[wid];
@@ -38,11 +36,8 @@ widgetHelpers = (function () {
         extend(baseDebtViewModel, debtViewModel);
 
         setTimeout(function () {
-            addTable(wid, 'mortgage');
-        }, 25);
-        setTimeout(function () {
-            applyKnockoutBindings(widget);
-        }, 50);
+            addTable(wid, function () { applyKnockoutBindings(widget); });
+        }, 0);
     }
 
 
@@ -59,11 +54,8 @@ widgetHelpers = (function () {
         extend(baseDebtViewModel, debtViewModel);
 
         setTimeout(function () {
-            addTable(wid, 'cc');
-        }, 25);
-        setTimeout(function () {
-            applyKnockoutBindings(widget);
-        }, 50);
+            addTable(wid, function () { applyKnockoutBindings(widget); });
+        }, 0);
     }
 
     function addPension(wid) {
@@ -75,11 +67,8 @@ widgetHelpers = (function () {
         extend(baseSaveViewModel, widget.ko);
 
         setTimeout(function () {
-            addTable(wid, 'pension');
-        }, 25);
-        setTimeout(function () {
-            applyKnockoutBindings(widget);
-        }, 50);
+            addTable(wid, function () { applyKnockoutBindings(widget); });
+        }, 0);
     }
 
     function addISA(wid) {
@@ -91,15 +80,12 @@ widgetHelpers = (function () {
         extend(baseSaveViewModel, widget.ko);
 
         setTimeout(function () {
-            addTable(wid, 'isa');
-        }, 25);
-        setTimeout(function () {
-            applyKnockoutBindings(widget);
-        }, 50);
+            addTable(wid, function () { applyKnockoutBindings(widget); });
+        }, 0);
     }
 
 
-    function addTable(wid) {
+    function addTable(wid, callback) {
 
         var widget = widgetList[wid];
         var instrument = widget.instrument;
@@ -110,6 +96,9 @@ widgetHelpers = (function () {
         var $ins = $('#' + widget.tableId);
         var tableHtml = templateCompiled(data);
         $ins.html(tableHtml);
+        if (callback) {
+            callback();
+        }
     }
 
     function addInstrument(wid) {
@@ -139,7 +128,6 @@ widgetHelpers = (function () {
             applyDatePickers(wid);
         }, 0);
 
-        addTable(wid, instrument);
 
         switch(instrument) {
             case 'mortgage':

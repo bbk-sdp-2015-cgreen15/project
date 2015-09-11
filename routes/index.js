@@ -24,18 +24,7 @@ function handler_tsp(req, res) {
   var body = req.body;
   var chartData;
 
-  console.log(' In handler_tsp Body is ');
   var instrument = body.attributes.instrument;
-  console.log(instrument);
-
-  console.log(' In handler_tsp Body is ');
-  console.log(body);
-
-  console.log(' In handler_tsp body.attributes is ');
-  console.log(body.attributes);
-
-  console.log(' In handler_tsp instrument is ');
-  console.log(instrument);
 
   switch (instrument) {
 
@@ -68,17 +57,8 @@ function handler_tabledata(req, res) {
   var tableData;
 
   var body = req.body;
-var attributes = body.attributes || {};
-var instrument = attributes.instrument || '';
-
-  console.log(' In handler_tabledata Body is ');
-  console.log(body);
-
-  console.log(' In handler_tabledata body.attributes is ');
-  console.log(attributes);
-
-  console.log(' In handler_tabledata instrument is ');
-  console.log(instrument);
+  var attributes = body.attributes || {};
+  var instrument = attributes.instrument || '';
 
   switch (instrument) {
     case 'pension':
